@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "XML88Il4GVJ8Z9aAt5fNLx9FyySJnN+jaLu8cHdLaF25QzgoADV+cCGQXRgQc/cvGu3s2TCZ7QjwliBySQpLrA==",
+  "dgSpecHash": "g0eOlH4+gBPLmL2BGRMtiWY+m49pUDwYNxUxgEUV9x7Sk1J2YaAi+PUQLKWMeXxjMToXDP+I0ag44IhhqlgXrA==",
   "success": true,
   "projectFilePath": "/Users/yarkinatac/Development/SENIORPROJECT/dotnet/SeniorProject/SeniorProject/SeniorProject/SeniorProject.csproj",
   "expectedPackageFiles": [
@@ -56,6 +56,7 @@
     "/Users/yarkinatac/.nuget/packages/humanizer.core.zh-cn/2.14.1/humanizer.core.zh-cn.2.14.1.nupkg.sha512",
     "/Users/yarkinatac/.nuget/packages/humanizer.core.zh-hans/2.14.1/humanizer.core.zh-hans.2.14.1.nupkg.sha512",
     "/Users/yarkinatac/.nuget/packages/humanizer.core.zh-hant/2.14.1/humanizer.core.zh-hant.2.14.1.nupkg.sha512",
+    "/Users/yarkinatac/.nuget/packages/microsoft.aspnetcore.authentication.google/7.0.14/microsoft.aspnetcore.authentication.google.7.0.14.nupkg.sha512",
     "/Users/yarkinatac/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/7.0.14/microsoft.aspnetcore.authentication.jwtbearer.7.0.14.nupkg.sha512",
     "/Users/yarkinatac/.nuget/packages/microsoft.aspnetcore.openapi/7.0.14/microsoft.aspnetcore.openapi.7.0.14.nupkg.sha512",
     "/Users/yarkinatac/.nuget/packages/microsoft.aspnetcore.razor.language/6.0.11/microsoft.aspnetcore.razor.language.6.0.11.nupkg.sha512",

@@ -7,6 +7,13 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Eklemeler
+builder.Services.AddAuthentication()
+    .AddGoogle(options =>
+    {
+        options.ClientId = "514547504352-34muov5k1lve498art74t6of3ts82rcl.apps.googleusercontent.com";
+        options.ClientSecret = "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";
+    });
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

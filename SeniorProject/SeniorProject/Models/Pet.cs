@@ -32,4 +32,6 @@ public class Pet
     // Navigation property - Bir pet'in sahibi olur
     [ForeignKey("UserId")]
     public virtual User Owner { get; set; }
+    
+    public virtual ICollection<PetPhoto> Photos { get; set; }
 }

@@ -1,4 +1,6 @@
-public class PetDto
+namespace SeniorProject.Models.Dto;
+
+public class CombinedDto
 {
     public string Name { get; set; }
     public string Type { get; set; }
@@ -9,7 +11,5 @@ public class PetDto
     public string Size { get; set; }
     public string Shedding { get; set; }
     public string Personality { get; set; }
-    
-   
-
+    public IFormFile PetPhoto { get; set; } = null!;
 }

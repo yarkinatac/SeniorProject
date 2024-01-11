@@ -10,6 +10,8 @@ public class PetsConnectedDbContext : DbContext
 
     public DbSet<User> Users { get; set; }
     public DbSet<Pet> Pets { get; set; }
+    public DbSet<PetPhoto> PetPhotos { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

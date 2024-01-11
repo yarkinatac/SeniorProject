@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SeniorProject.Models;
+using SeniorProject.Models.Dto;
+using SeniorProject.Services.Blob;
 
 namespace SeniorProject.Controllers
 {
@@ -16,6 +18,7 @@ namespace SeniorProject.Controllers
     public class PetController : ControllerBase
     {
         private readonly PetsConnectedDbContext _context;
+        private readonly BlobService _blobService;
 
         public PetController(PetsConnectedDbContext context)
         {
@@ -82,9 +85,10 @@ namespace SeniorProject.Controllers
             return NoContent();
         }
         
+        
         [HttpPost("AddPet")]
         [Authorize] // Giriş yapmış kullanıcıları kabul et
-        public async Task<ActionResult<Pet>> AddPet([FromBody] PetDto petDto)
+        public async Task<ActionResult<Pet>> AddPet([FromForm] CombinedDto combinedDto)
         {
             var userId = GetUserIdFromToken(); // Token'dan UserId elde et
 
@@ -93,18 +97,25 @@ namespace SeniorProject.Controllers
                 return NotFound(new { message = "User not found." });
             }
 
+            // Fotoğrafı Azure Blob Storage'a yükle
+            var photoUrl = await _blobService.UploadPhotoAsync(combinedDto.PetPhoto);
+
             var pet = new Pet
             {
-                Name = petDto.Name,
-                Type = petDto.Type,
-                Age = petDto.Age,
-                Breed = petDto.Breed,
-                Sex = petDto.Sex,
-                Distance = petDto.Distance,
-                Size = petDto.Size,
-                Shedding = petDto.Shedding,
-                Personality = petDto.Personality,
+                Name = combinedDto.Name,
+                Type = combinedDto.Type,
+                Age = combinedDto.Age,
+                Breed = combinedDto.Breed,
+                Sex = combinedDto.Sex,
+                Distance = combinedDto.Distance,
+                Size = combinedDto.Size,
+                Shedding = combinedDto.Shedding,
+                Personality = combinedDto.Personality,
                 UserId = userId,
+                Photos = new List<PetPhoto>
+                {
+                    new PetPhoto { PhotoUrl = photoUrl } // Yeni PetPhoto nesnesini oluştur ve URL'yi ekle
+                }
             };
 
             _context.Pets.Add(pet);
@@ -112,6 +123,7 @@ namespace SeniorProject.Controllers
 
             return CreatedAtAction("GetPet", new { id = pet.PetId }, pet);
         }
+
 
 
         private Guid GetUserIdFromToken()

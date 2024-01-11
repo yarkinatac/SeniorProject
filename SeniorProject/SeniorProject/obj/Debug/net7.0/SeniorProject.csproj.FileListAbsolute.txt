@@ -565,3 +565,7 @@
 /Users/yarkinatac/Development/SENIORPROJECT/dotnet/SeniorProject/SeniorProject/SeniorProject/obj/Debug/net7.0/SeniorProject.pdb
 /Users/yarkinatac/Development/SENIORPROJECT/dotnet/SeniorProject/SeniorProject/SeniorProject/obj/Debug/net7.0/SeniorProject.genruntimeconfig.cache
 /Users/yarkinatac/Development/SENIORPROJECT/dotnet/SeniorProject/SeniorProject/SeniorProject/obj/Debug/net7.0/ref/SeniorProject.dll
+/Users/yarkinatac/Development/SENIORPROJECT/dotnet/SeniorProject/SeniorProject/SeniorProject/bin/Debug/net7.0/Microsoft.AspNetCore.Authentication.Google.dll
+/Users/yarkinatac/Development/SENIORPROJECT/dotnet/SeniorProject/SeniorProject/SeniorProject/bin/Debug/net7.0/Azure.Storage.Blobs.dll
+/Users/yarkinatac/Development/SENIORPROJECT/dotnet/SeniorProject/SeniorProject/SeniorProject/bin/Debug/net7.0/Azure.Storage.Common.dll
+/Users/yarkinatac/Development/SENIORPROJECT/dotnet/SeniorProject/SeniorProject/SeniorProject/bin/Debug/net7.0/System.IO.Hashing.dll

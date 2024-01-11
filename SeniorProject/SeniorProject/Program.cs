@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SeniorProject.Services.Blob;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false
         };
     });
+builder.Services.AddScoped<BlobService>();
+
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -35,11 +38,12 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<PetsConnectedDbContext>(options =>
     options.UseSqlServer(connectionString));
 
+
 // Swagger eklentileri
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API Name", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Pets Connected", Version = "v1" });
 
     // JWT kimlik doğrulama eklemek için aşağıdaki kodu kullanın
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -72,7 +76,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Your API Name v1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Pets Connected v1");
 
         // Swagger UI'ı kimlik doğrulama için yapılandırmak için
         c.OAuthUseBasicAuthenticationWithAccessCodeGrant();

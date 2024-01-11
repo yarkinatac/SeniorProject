@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -79,12 +81,18 @@ namespace SeniorProject.Controllers
 
             return NoContent();
         }
-
-        // POST: api/Pet
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Pet>> PostPet([FromBody] PetDto petDto)
+        
+        [HttpPost("AddPet")]
+        [Authorize] // Giriş yapmış kullanıcıları kabul et
+        public async Task<ActionResult<Pet>> AddPet([FromBody] PetDto petDto)
         {
+            var userId = GetUserIdFromToken(); // Token'dan UserId elde et
+
+            if (userId == Guid.Empty)
+            {
+                return NotFound(new { message = "User not found." });
+            }
+
             var pet = new Pet
             {
                 Name = petDto.Name,
@@ -96,8 +104,7 @@ namespace SeniorProject.Controllers
                 Size = petDto.Size,
                 Shedding = petDto.Shedding,
                 Personality = petDto.Personality,
-
-                // Kullanıcı ID'si veya diğer gerekli alanlar
+                UserId = userId,
             };
 
             _context.Pets.Add(pet);
@@ -105,6 +112,25 @@ namespace SeniorProject.Controllers
 
             return CreatedAtAction("GetPet", new { id = pet.PetId }, pet);
         }
+
+
+        private Guid GetUserIdFromToken()
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity != null)
+            {
+                var userClaim = identity.FindFirst("id");
+                if (userClaim != null)
+                {
+                    return Guid.Parse(userClaim.Value);
+                }
+            }
+            return Guid.Empty;
+        }
+
+
+
+
 
         // DELETE: api/Pet/5
         [HttpDelete("{id}")]

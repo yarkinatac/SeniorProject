@@ -40,10 +40,11 @@ public class AccountController : ControllerBase
             _context.Users.Add(user);
             _context.SaveChanges();
 
-            return Ok(new { message = "Registration successful" });
+            return Ok(new { message = "Registration successful" , userId = user.UserId});
         }
         return BadRequest(ModelState);
     }
+    
     [HttpPost("Login")]
     public IActionResult Login(Login model)
     {
@@ -52,9 +53,10 @@ public class AccountController : ControllerBase
             var user = _context.Users.FirstOrDefault(u => u.Email == model.Email);
             if (user != null && model.Password == user.Password)
             {
-                // Token üretmek için bir metot kullanın (örneğin, JWT üretin)
-                
-                return Ok(new { message = "Login successful" });
+                var token = GenerateJwtToken(user);
+
+                // Token'i kullanıcıya dön
+                return Ok(new { message = "Login successful", token });
             }
             else
             {
@@ -64,6 +66,7 @@ public class AccountController : ControllerBase
 
         return BadRequest(ModelState);
     }
+
 
    
 
@@ -86,6 +89,8 @@ public class AccountController : ControllerBase
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
     }
+
+
 
     // Google kimlik doğrulama işlemleri için Web API'de farklı bir yaklaşım gereklidir.
     // Bu, genellikle frontend tarafında yapılır ve backend sadece token doğrulaması yapar.

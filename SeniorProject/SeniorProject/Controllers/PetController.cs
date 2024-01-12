@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -20,25 +21,26 @@ namespace SeniorProject.Controllers
         private readonly PetsConnectedDbContext _context;
         private readonly BlobService _blobService;
 
-        public PetController(PetsConnectedDbContext context)
+        public PetController(PetsConnectedDbContext context, BlobService blobService)
         {
             _context = context;
+            _blobService = blobService;
         }
-
+        
         // GET: api/Pet
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Pet>>> GetPets()
+        public async Task<ActionResult<IEnumerable>> GetPets()
         {
           if (_context.Pets == null)
           {
               return NotFound();
           }
-            return await _context.Pets.ToListAsync();
+          return await _context.Pets.Include(x => x.Owner).Include(x => x.Photos).ToListAsync();
         }
 
         // GET: api/Pet/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Pet>> GetPet(Guid id)
+        public async Task<ActionResult> GetPet(Guid id)
         {
           if (_context.Pets == null)
           {
@@ -51,7 +53,7 @@ namespace SeniorProject.Controllers
                 return NotFound();
             }
 
-            return pet;
+            return Ok(pet);
         }
 
         // PUT: api/Pet/5
@@ -88,7 +90,7 @@ namespace SeniorProject.Controllers
         
         [HttpPost("AddPet")]
         [Authorize] // Giriş yapmış kullanıcıları kabul et
-        public async Task<ActionResult<Pet>> AddPet([FromForm] CombinedDto combinedDto)
+        public async Task<ActionResult> AddPet([FromForm] CombinedDto combinedDto)
         {
             var userId = GetUserIdFromToken(); // Token'dan UserId elde et
 
@@ -114,18 +116,14 @@ namespace SeniorProject.Controllers
                 UserId = userId,
                 Photos = new List<PetPhoto>
                 {
-                    new PetPhoto { PhotoUrl = photoUrl } // Yeni PetPhoto nesnesini oluştur ve URL'yi ekle
+                    new PetPhoto { PhotoUrl = photoUrl } 
                 }
             };
-
             _context.Pets.Add(pet);
             await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetPet", new { id = pet.PetId }, pet);
+            var data = _context.Pets.Include(x => x.Owner).FirstOrDefault(x => x.PetId == pet.PetId);
+            return Ok(data);
         }
-
-
-
         private Guid GetUserIdFromToken()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;

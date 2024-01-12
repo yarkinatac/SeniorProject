@@ -16,24 +16,26 @@ namespace SeniorProject.Services.Blob
         public async Task<string> UploadPhotoAsync(IFormFile photo)
         {
             // Benzersiz bir dosya adı oluştur
-            var uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(photo.FileName)}";
-            var blobClient = _containerClient.GetBlobClient(uniqueFileName);
+            var guid = Guid.NewGuid();
+            var fileName = $"{guid + Path.GetExtension(photo.FileName)}";
+            var blobClient = _containerClient.GetBlobClient(fileName);
 
             var options = new BlobUploadOptions
             {
                 HttpHeaders = new BlobHttpHeaders
                 {
-                    ContentType = photo.ContentType // Gerçek dosya türünü kullan
+                    ContentType = "image/jpeg" // Gerçek dosya türünü kullan
                 }
             };
 
             // Dosyayı yükle
             using (var stream = photo.OpenReadStream())
             {
-                await blobClient.UploadAsync(stream, options);
+                await blobClient.UploadAsync(stream, httpHeaders: new BlobHttpHeaders { ContentType = "image/jpeg" });
             }
 
             return blobClient.Uri.ToString();
+            
         }
 
     }

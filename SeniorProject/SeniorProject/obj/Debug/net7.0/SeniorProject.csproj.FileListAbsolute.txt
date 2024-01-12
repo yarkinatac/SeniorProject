@@ -569,3 +569,6 @@
 /Users/yarkinatac/Development/SENIORPROJECT/dotnet/SeniorProject/SeniorProject/SeniorProject/bin/Debug/net7.0/Azure.Storage.Blobs.dll
 /Users/yarkinatac/Development/SENIORPROJECT/dotnet/SeniorProject/SeniorProject/SeniorProject/bin/Debug/net7.0/Azure.Storage.Common.dll
 /Users/yarkinatac/Development/SENIORPROJECT/dotnet/SeniorProject/SeniorProject/SeniorProject/bin/Debug/net7.0/System.IO.Hashing.dll
+/Users/yarkinatac/Development/SENIORPROJECT/dotnet/SeniorProject/SeniorProject/SeniorProject/bin/Debug/net7.0/Microsoft.AspNetCore.JsonPatch.dll
+/Users/yarkinatac/Development/SENIORPROJECT/dotnet/SeniorProject/SeniorProject/SeniorProject/bin/Debug/net7.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+/Users/yarkinatac/Development/SENIORPROJECT/dotnet/SeniorProject/SeniorProject/SeniorProject/bin/Debug/net7.0/Newtonsoft.Json.Bson.dll

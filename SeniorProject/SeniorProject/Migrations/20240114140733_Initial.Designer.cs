@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace SeniorProject.Migrations
 {
     [DbContext(typeof(PetsConnectedDbContext))]
-    [Migration("20240109141523_Initial")]
+    [Migration("20240114140733_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -75,6 +75,26 @@ namespace SeniorProject.Migrations
                     b.ToTable("Pets");
                 });
 
+            modelBuilder.Entity("SeniorProject.Models.PetPhoto", b =>
+                {
+                    b.Property<Guid>("PetPhotoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PetId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("PhotoUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PetPhotoId");
+
+                    b.HasIndex("PetId");
+
+                    b.ToTable("PetPhotos");
+                });
+
             modelBuilder.Entity("SeniorProject.Models.User", b =>
                 {
                     b.Property<Guid>("UserId")
@@ -96,7 +116,7 @@ namespace SeniorProject.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("PasswordHash")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -114,6 +134,22 @@ namespace SeniorProject.Migrations
                         .IsRequired();
 
                     b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("SeniorProject.Models.PetPhoto", b =>
+                {
+                    b.HasOne("SeniorProject.Models.Pet", "Pet")
+                        .WithMany("Photos")
+                        .HasForeignKey("PetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pet");
+                });
+
+            modelBuilder.Entity("SeniorProject.Models.Pet", b =>
+                {
+                    b.Navigation("Photos");
                 });
 
             modelBuilder.Entity("SeniorProject.Models.User", b =>

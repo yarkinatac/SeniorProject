@@ -19,7 +19,7 @@ namespace SeniorProject.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -53,6 +53,30 @@ namespace SeniorProject.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "PetPhotos",
+                columns: table => new
+                {
+                    PetPhotoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PhotoUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PetId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PetPhotos", x => x.PetPhotoId);
+                    table.ForeignKey(
+                        name: "FK_PetPhotos_Pets_PetId",
+                        column: x => x.PetId,
+                        principalTable: "Pets",
+                        principalColumn: "PetId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PetPhotos_PetId",
+                table: "PetPhotos",
+                column: "PetId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Pets_UserId",
                 table: "Pets",
@@ -62,6 +86,9 @@ namespace SeniorProject.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "PetPhotos");
+
             migrationBuilder.DropTable(
                 name: "Pets");
 

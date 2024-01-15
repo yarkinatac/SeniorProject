@@ -15,7 +15,7 @@ namespace SeniorProject.Services.Blob
 
         public async Task<string> UploadPhotoAsync(IFormFile photo)
         {
-            // Benzersiz bir dosya adı oluştur
+            // Benzersiz bir dosya adı oluştur BlogStorage İmage kısmında gözükmesi için
             var guid = Guid.NewGuid();
             var fileName = $"{guid + Path.GetExtension(photo.FileName)}";
             var blobClient = _containerClient.GetBlobClient(fileName);

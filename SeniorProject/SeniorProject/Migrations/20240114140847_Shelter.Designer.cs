@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace SeniorProject.Migrations
 {
     [DbContext(typeof(PetsConnectedDbContext))]
-    [Migration("20240111170438_AddPetPhoto")]
-    partial class AddPetPhoto
+    [Migration("20240114140847_Shelter")]
+    partial class Shelter
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,6 +57,10 @@ namespace SeniorProject.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("ShelterId")
+                        .IsRequired()
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Size")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -69,6 +73,8 @@ namespace SeniorProject.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("PetId");
+
+                    b.HasIndex("ShelterId");
 
                     b.HasIndex("UserId");
 
@@ -93,6 +99,34 @@ namespace SeniorProject.Migrations
                     b.HasIndex("PetId");
 
                     b.ToTable("PetPhotos");
+                });
+
+            modelBuilder.Entity("SeniorProject.Models.Shelter", b =>
+                {
+                    b.Property<Guid>("ShelterId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WebsiteUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ShelterId");
+
+                    b.ToTable("Shelters");
                 });
 
             modelBuilder.Entity("SeniorProject.Models.User", b =>
@@ -127,6 +161,12 @@ namespace SeniorProject.Migrations
 
             modelBuilder.Entity("SeniorProject.Models.Pet", b =>
                 {
+                    b.HasOne("SeniorProject.Models.Shelter", "Shelter")
+                        .WithMany("Pets")
+                        .HasForeignKey("ShelterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("SeniorProject.Models.User", "Owner")
                         .WithMany("Pets")
                         .HasForeignKey("UserId")
@@ -134,6 +174,8 @@ namespace SeniorProject.Migrations
                         .IsRequired();
 
                     b.Navigation("Owner");
+
+                    b.Navigation("Shelter");
                 });
 
             modelBuilder.Entity("SeniorProject.Models.PetPhoto", b =>
@@ -150,6 +192,11 @@ namespace SeniorProject.Migrations
             modelBuilder.Entity("SeniorProject.Models.Pet", b =>
                 {
                     b.Navigation("Photos");
+                });
+
+            modelBuilder.Entity("SeniorProject.Models.Shelter", b =>
+                {
+                    b.Navigation("Pets");
                 });
 
             modelBuilder.Entity("SeniorProject.Models.User", b =>

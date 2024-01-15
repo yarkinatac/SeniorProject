@@ -27,6 +27,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false
         };
     });
+
+//VERY IMPORTANT FOR UPLOAD PHOTO
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     {

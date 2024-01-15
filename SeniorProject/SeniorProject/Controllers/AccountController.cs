@@ -39,7 +39,6 @@ public class AccountController : ControllerBase
 
             _context.Users.Add(user);
             _context.SaveChanges();
-
             return Ok(new { message = "Registration successful" , userId = user.UserId});
         }
         return BadRequest(ModelState);
@@ -67,11 +66,7 @@ public class AccountController : ControllerBase
         return BadRequest(ModelState);
     }
     
-
-
-   
-
-    // Bu örnekte JWT token üretimi için basit bir metod.
+    // Create JWT Token.
     private string GenerateJwtToken(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
@@ -90,9 +85,7 @@ public class AccountController : ControllerBase
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
     }
-
-
-
+    
     // Google kimlik doğrulama işlemleri için Web API'de farklı bir yaklaşım gereklidir.
     // Bu, genellikle frontend tarafında yapılır ve backend sadece token doğrulaması yapar.
 
@@ -104,6 +97,6 @@ public class AccountController : ControllerBase
         return Ok(new { message = "Logged out successfully" });
     }
 
-    // Yardımcı metodlarınızı koruyun.
+    
    
 }

@@ -11,6 +11,8 @@ public class PetsConnectedDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Pet> Pets { get; set; }
     public DbSet<PetPhoto> PetPhotos { get; set; }
+    public DbSet<Shelter> Shelters { get; set; }
+
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -27,5 +29,10 @@ public class PetsConnectedDbContext : DbContext
 
         // Burada ekstra konfigürasyonlarınızı da yapabilirsiniz, örneğin:
         // Tablo isimlerini, varsayılan değerleri, indeksleri, unique kısıtları vs. tanımlayabilirsiniz.
+        modelBuilder.Entity<Shelter>()
+            .HasMany(s => s.Pets)
+            .WithOne(p => p.Shelter)
+            .HasForeignKey(p => p.ShelterId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

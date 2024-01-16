@@ -8,22 +8,24 @@ namespace SeniorProject.Models
     public class Shelter
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid ShelterId { get; set; }
+        public Guid ShelterId { get; set; } // Benzersiz kimlik
 
         [Required]
         [MaxLength(256)]
-        public string Name { get; set; }
+        public string Name { get; set; } // Barınağın ismi
 
         [Required]
-        public string Location { get; set; } // Barınağın konumu (örneğin, şehir, semt)
+        public string Location { get; set; } // Şehir
 
         [Required]
-        public string Phone { get; set; } // Barınağın iletişim numarası
+        [Phone]
+        public string Phone { get; set; } // Telefon numarası
 
-        public string WebsiteUrl { get; set; } // Barınağın web sitesi (isteğe bağlı)
+        public string WebsiteUrl { get; set; } // Website URL (isteğe bağlı)
 
-        // Barınakta bulunan evcil hayvanlar için ilişki
+        // Barınağın fotoğraflarını tutacak koleksiyon
+
+        public virtual ICollection<ShelterPhoto> Photos { get; set; }
         public virtual ICollection<Pet> Pets { get; set; }
         
     }

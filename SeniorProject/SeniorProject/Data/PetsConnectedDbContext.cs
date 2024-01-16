@@ -12,6 +12,7 @@ public class PetsConnectedDbContext : DbContext
     public DbSet<Pet> Pets { get; set; }
     public DbSet<PetPhoto> PetPhotos { get; set; }
     public DbSet<Shelter> Shelters { get; set; }
+    public DbSet<ShelterPhoto> ShelterPhotos { get; set; }
 
 
 

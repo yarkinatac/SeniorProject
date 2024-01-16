@@ -12291,24 +12291,25 @@
     ]
   },
   "packageFolders": {
-    "/Users/yarkinatac/.nuget/packages/": {}
+    "/Users/brk_c/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/yarkinatac/Development/SENIORPROJECT/dotnet/SeniorProject/SeniorProject/SeniorProject/SeniorProject.csproj",
+      "projectUniqueName": "/Users/brk_c/RiderProjects/SeniorProject/SeniorProject/SeniorProject/SeniorProject.csproj",
       "projectName": "SeniorProject",
-      "projectPath": "/Users/yarkinatac/Development/SENIORPROJECT/dotnet/SeniorProject/SeniorProject/SeniorProject/SeniorProject.csproj",
-      "packagesPath": "/Users/yarkinatac/.nuget/packages/",
-      "outputPath": "/Users/yarkinatac/Development/SENIORPROJECT/dotnet/SeniorProject/SeniorProject/SeniorProject/obj/",
+      "projectPath": "/Users/brk_c/RiderProjects/SeniorProject/SeniorProject/SeniorProject/SeniorProject.csproj",
+      "packagesPath": "/Users/brk_c/.nuget/packages/",
+      "outputPath": "/Users/brk_c/RiderProjects/SeniorProject/SeniorProject/SeniorProject/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/yarkinatac/.nuget/NuGet/NuGet.Config"
+        "/Users/brk_c/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
+        "/usr/local/share/dotnet/sdk/7.0.311/Sdks/Microsoft.NET.Sdk.Web/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -12403,7 +12404,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.100/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.311/RuntimeIdentifierGraph.json"
       }
     }
   }

@@ -104,6 +104,10 @@ namespace SeniorProject.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("AdditionalInformation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -183,7 +187,7 @@ namespace SeniorProject.Migrations
             modelBuilder.Entity("SeniorProject.Models.Pet", b =>
                 {
                     b.HasOne("SeniorProject.Models.Shelter", "Shelter")
-                        .WithMany("Pets")
+                        .WithMany()
                         .HasForeignKey("ShelterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -228,8 +232,6 @@ namespace SeniorProject.Migrations
 
             modelBuilder.Entity("SeniorProject.Models.Shelter", b =>
                 {
-                    b.Navigation("Pets");
-
                     b.Navigation("Photos");
                 });
 

@@ -22,11 +22,13 @@ namespace SeniorProject.Models
         public string Phone { get; set; } // Telefon numarası
 
         public string WebsiteUrl { get; set; } // Website URL (isteğe bağlı)
+        
+        public string AdditionalInformation { get; set; }
 
         // Barınağın fotoğraflarını tutacak koleksiyon
 
         public virtual ICollection<ShelterPhoto> Photos { get; set; }
-        public virtual ICollection<Pet> Pets { get; set; }
+        
         
     }
 }

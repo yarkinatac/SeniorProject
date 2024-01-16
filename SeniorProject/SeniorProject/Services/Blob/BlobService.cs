@@ -9,8 +9,8 @@ namespace SeniorProject.Services.Blob
 
         public BlobService()
         {
-            var blobServiceClient = new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=petsconnectedstorage;AccountKey=BCZZ9yTfJ8fyM8ZVQeVIOT4XC8cj+IJY17fgUga7z5Lby4dtqlLZpuGZ8Z787Q/NPhOscdLT5gQ5+AStUskKDQ==;EndpointSuffix=core.windows.net");
-            _containerClient = blobServiceClient.GetBlobContainerClient("images");
+            var blobServiceClient = new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=petsconnected;AccountKey=wKXfutveRXwcefpVrqMDJPr/GeGMEZe8ooRzhOWndTV22Grz9VsmZ1e3nI9h/qE68xEMBQvhPK0Q+AStkM3BPw==;EndpointSuffix=core.windows.net");
+            _containerClient = blobServiceClient.GetBlobContainerClient("petsconnected");
         }
 
         public async Task<string> UploadPhotoAsync(IFormFile photo)

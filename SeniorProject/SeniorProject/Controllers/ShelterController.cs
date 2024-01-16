@@ -101,6 +101,7 @@ namespace SeniorProject.Controllers
                 Location = shelterDto.Location,
                 Phone = shelterDto.Phone,
                 WebsiteUrl = shelterDto.WebsiteUrl,
+                AdditionalInformation = shelterDto.AdditionalInformation,
                 Photos = new List<ShelterPhoto>
                 {
                     new ShelterPhoto { PhotoUrl = photoUrl } 

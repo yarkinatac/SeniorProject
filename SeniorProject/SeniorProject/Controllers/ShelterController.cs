@@ -1,10 +1,13 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using SeniorProject.Models;
 using SeniorProject.Models.Dto;
 using SeniorProject.Services.Blob;
@@ -23,116 +26,80 @@ namespace SeniorProject.Controllers
             _context = context;
             _blobService = blobService;
         }
-
-        // GET: api/Shelter
+        
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Shelter>>> GetShelters()
+        public async Task<ActionResult<IEnumerable>> GetShelters()
         {
             if (_context.Shelters == null)
             {
                 return NotFound();
             }
-
-            return await _context.Shelters.ToListAsync();
+            return await _context.Shelters.Include(s => s.Photos).ToListAsync();
         }
 
-        // GET: api/Shelter/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Shelter>> GetShelter(Guid id)
-        {
-            if (_context.Shelters == null)
-            {
-                return NotFound();
-            }
-
-            var shelter = await _context.Shelters.FindAsync(id);
-
-            if (shelter == null)
-            {
-                return NotFound();
-            }
-
-            return shelter;
-        }
-
-        // PUT: api/Shelter/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutShelter(Guid id, Shelter shelter)
-        {
-            if (id != shelter.ShelterId)
-            {
-                return BadRequest();
-            }
-
-
-            _context.Entry(shelter).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ShelterExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        [HttpPost("AddShelter")]
-
-        public async Task<ActionResult> AddShelter([FromForm] ShelterDto shelterDto)
+        [HttpPost]
+        public async Task<IActionResult> AddShelter([FromForm] AddingShelterDto addingShelter)
         {
             
-
             // Fotoğrafı Azure Blob Storage'a yükle
-            var photoUrl = await _blobService.UploadPhotoAsync(shelterDto.ShelterPhoto);
+            var photoUrl = await _blobService.UploadShelterPhotoAsync(addingShelter.ShelterPhoto, addingShelter.Name);
 
             var shelter = new Shelter
             {
-                Name = shelterDto.Name,
-                Location = shelterDto.Location,
-                Phone = shelterDto.Phone,
-                WebsiteUrl = shelterDto.WebsiteUrl,
-                AdditionalInformation = shelterDto.AdditionalInformation,
+                Name = addingShelter.Name,
+                Address = addingShelter.Address,
+                City = addingShelter.City,
+                State = addingShelter.State,
+                ZipCode = addingShelter.ZipCode,
+                PhoneNumber = addingShelter.PhoneNumber,
+                Email = addingShelter.Email,
+                WebsiteUrl = addingShelter.WebsiteUrl,
+                AdditionalInformation = addingShelter.AdditionalInformation,
                 Photos = new List<ShelterPhoto>
                 {
                     new ShelterPhoto { PhotoUrl = photoUrl } 
-                },
-                // Diğer gerekli alanlar
+                }
             };
             _context.Shelters.Add(shelter);
             await _context.SaveChangesAsync();
-            var data = _context.Shelters.Include(x => x.ShelterId).FirstOrDefault(x => x.ShelterId == shelter.ShelterId);
+            var data = _context.Shelters
+                .Include(s => s.Photos) // Include photos of the shelter
+                .FirstOrDefault(s => s.ShelterId == shelter.ShelterId);
             return Ok(data);
         }
-
-        // DELETE: api/Shelter/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteShelter(Guid id)
+        
+        [HttpPatch("UpdateShelter")]
+        public async Task<IActionResult> UpdateShelter([FromForm] UpdateShelterDto shelter)
         {
-            var shelter = await _context.Shelters.FindAsync(id);
             if (shelter == null)
-            {
-                return NotFound();
-            }
+                return BadRequest();
+            
 
-            _context.Shelters.Remove(shelter);
+            var updatedShelter = await _context.Shelters.FirstOrDefaultAsync(s => s.ShelterId == shelter.ShelterId);
+            
+            if (updatedShelter == null)
+                return NotFound();
+
+            updatedShelter.Address = string.IsNullOrEmpty(shelter.Address) ? updatedShelter.Address : shelter.Address;
+            updatedShelter.Name = string.IsNullOrEmpty(shelter.Name) ? updatedShelter.Name : shelter.Name;
+            updatedShelter.City = string.IsNullOrEmpty(shelter.City) ? updatedShelter.City : shelter.City;
+            updatedShelter.State = string.IsNullOrEmpty(shelter.State) ? updatedShelter.State : shelter.State;
+            updatedShelter.ZipCode = string.IsNullOrEmpty(shelter.ZipCode) ? updatedShelter.ZipCode : shelter.ZipCode;
+            updatedShelter.WebsiteUrl = string.IsNullOrEmpty(shelter.WebsiteUrl) ? updatedShelter.WebsiteUrl : shelter.WebsiteUrl;
+            updatedShelter.AdditionalInformation = string.IsNullOrEmpty(shelter.AdditionalInformation) ? updatedShelter.AdditionalInformation : shelter.AdditionalInformation;
+            updatedShelter.Email = string.IsNullOrEmpty(shelter.Email) ? updatedShelter.Email : shelter.Email;
+            updatedShelter.PhoneNumber = string.IsNullOrEmpty(shelter.PhoneNumber) ? updatedShelter.PhoneNumber : shelter.PhoneNumber;
+            
+            if (shelter.ShelterPhoto != null)
+            {
+                var photoUrl = await _blobService.UploadShelterPhotoAsync(shelter.ShelterPhoto, shelter.Name);
+
+            }
+            
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(shelter);
         }
 
-        private bool ShelterExists(Guid id)
-        {
-            return _context.Shelters.Any(e => e.ShelterId == id);
-        }
     }
 }

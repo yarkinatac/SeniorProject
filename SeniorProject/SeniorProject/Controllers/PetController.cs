@@ -56,37 +56,39 @@ namespace SeniorProject.Controllers
             return Ok(pet);
         }
 
-        // PUT: api/Pet/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutPet(Guid id, Pet pet)
+        [HttpPatch("UpdatePet")]
+        public async Task<IActionResult> UpdatePet([FromForm] UpdatePetDto pet)
         {
-            if (id != pet.PetId)
-            {
+            if (pet == null)
                 return BadRequest();
-            }
+            
 
-            _context.Entry(pet).State = EntityState.Modified;
+            var updatedPet = await _context.Pets.FirstOrDefaultAsync(p => p.PetId == pet.PetId);
+            
+            if (updatedPet == null)
+                return NotFound();
 
-            try
+            updatedPet.Type = string.IsNullOrEmpty(pet.Type) ? updatedPet.Type : pet.Type;
+            updatedPet.Name = string.IsNullOrEmpty(pet.Name) ? updatedPet.Name : pet.Name;
+            updatedPet.Size = string.IsNullOrEmpty(pet.Size) ? updatedPet.Size : pet.Size;
+            updatedPet.Age = pet.Age.HasValue ? pet.Age.Value : updatedPet.Age;
+            updatedPet.Breed = string.IsNullOrEmpty(pet.Breed) ? updatedPet.Breed : pet.Breed;
+            updatedPet.Sex = string.IsNullOrEmpty(pet.Sex) ? updatedPet.Sex : pet.Sex;
+            updatedPet.Shedding = string.IsNullOrEmpty(pet.Shedding) ? updatedPet.Shedding : pet.Shedding;
+            updatedPet.Personality = string.IsNullOrEmpty(pet.Personality) ? updatedPet.Personality : pet.Personality;
+            updatedPet.Distance = pet.Distance.HasValue ? pet.Distance.Value : updatedPet.Distance;
+            
+            if (pet.PetPhoto != null)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PetExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+                var photoUrl = await _blobService.UploadPhotoAsync(pet.PetPhoto);
 
-            return NoContent();
+            }
+            
+            await _context.SaveChangesAsync();
+
+            return Ok(pet);
         }
-        
+
         
         [HttpPost("AddPet")]
         [Authorize] // Giriş yapmış kullanıcıları kabul et

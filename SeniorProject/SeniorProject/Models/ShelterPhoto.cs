@@ -1,20 +1,22 @@
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SeniorProject.Models;
 
 public class ShelterPhoto
 {
     [Key]
-    public Guid PhotoId { get; set; } // Benzersiz fotoğraf kimliği
-
-    public Guid ShelterId { get; set; } // İlişkili barınak kimliği
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public Guid ShelterPhotoId { get; set; }
 
     [Required]
-    public string PhotoUrl { get; set; } // Fotoğrafın URL'si
+    public string PhotoUrl { get; set; } // URL of the photo
 
-    // İsteğe bağlı olarak fotoğrafın açıklaması
-    public string Description { get; set; }
+    [Required]
+    public Guid ShelterId { get; set; }
 
-    // Barınağa geri referans
+    // Navigation property
+    [ForeignKey("ShelterId")]
     public virtual Shelter Shelter { get; set; }
 }

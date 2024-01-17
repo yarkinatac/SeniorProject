@@ -12,22 +12,6 @@ namespace SeniorProject.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Shelters",
-                columns: table => new
-                {
-                    ShelterId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    WebsiteUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AdditionalInformation = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Shelters", x => x.ShelterId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -40,26 +24,6 @@ namespace SeniorProject.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.UserId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ShelterPhotos",
-                columns: table => new
-                {
-                    PhotoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ShelterId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PhotoUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ShelterPhotos", x => x.PhotoId);
-                    table.ForeignKey(
-                        name: "FK_ShelterPhotos_Shelters_ShelterId",
-                        column: x => x.ShelterId,
-                        principalTable: "Shelters",
-                        principalColumn: "ShelterId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -76,18 +40,11 @@ namespace SeniorProject.Migrations
                     Size = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Shedding = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Personality = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ShelterId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Pets", x => x.PetId);
-                    table.ForeignKey(
-                        name: "FK_Pets_Shelters_ShelterId",
-                        column: x => x.ShelterId,
-                        principalTable: "Shelters",
-                        principalColumn: "ShelterId",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Pets_Users_UserId",
                         column: x => x.UserId,
@@ -121,19 +78,9 @@ namespace SeniorProject.Migrations
                 column: "PetId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pets_ShelterId",
-                table: "Pets",
-                column: "ShelterId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Pets_UserId",
                 table: "Pets",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ShelterPhotos_ShelterId",
-                table: "ShelterPhotos",
-                column: "ShelterId");
         }
 
         /// <inheritdoc />
@@ -143,13 +90,7 @@ namespace SeniorProject.Migrations
                 name: "PetPhotos");
 
             migrationBuilder.DropTable(
-                name: "ShelterPhotos");
-
-            migrationBuilder.DropTable(
                 name: "Pets");
-
-            migrationBuilder.DropTable(
-                name: "Shelters");
 
             migrationBuilder.DropTable(
                 name: "Users");

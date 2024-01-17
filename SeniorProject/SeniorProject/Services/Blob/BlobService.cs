@@ -6,11 +6,15 @@ namespace SeniorProject.Services.Blob
     public class BlobService
     {
         private readonly BlobContainerClient _containerClient;
+        private readonly BlobContainerClient _containerClient1;
 
         public BlobService()
         {
             var blobServiceClient = new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=petsconnected;AccountKey=wKXfutveRXwcefpVrqMDJPr/GeGMEZe8ooRzhOWndTV22Grz9VsmZ1e3nI9h/qE68xEMBQvhPK0Q+AStkM3BPw==;EndpointSuffix=core.windows.net");
             _containerClient = blobServiceClient.GetBlobContainerClient("petsconnected");
+            
+            var blobServiceClient1 = new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=petsconnected;AccountKey=wKXfutveRXwcefpVrqMDJPr/GeGMEZe8ooRzhOWndTV22Grz9VsmZ1e3nI9h/qE68xEMBQvhPK0Q+AStkM3BPw==;EndpointSuffix=core.windows.net");
+            _containerClient = blobServiceClient1.GetBlobContainerClient("shelter");
         }
 
         public async Task<string> UploadPhotoAsync(IFormFile photo)
@@ -36,6 +40,30 @@ namespace SeniorProject.Services.Blob
 
             return blobClient.Uri.ToString();
             
+        }
+
+        public async Task<string> UploadShelterPhotoAsync(IFormFile shelterPhoto, string name)
+        {
+            // Benzersiz bir dosya adı oluştur BlogStorage İmage kısmında gözükmesi için
+            
+            var fileName = $"{name + Path.GetExtension(shelterPhoto.FileName)}";
+            var blobClient = _containerClient.GetBlobClient(fileName);
+
+            var options = new BlobUploadOptions
+            {
+                HttpHeaders = new BlobHttpHeaders
+                {
+                    ContentType = "image/jpeg" // Gerçek dosya türünü kullan
+                }
+            };
+
+            // Dosyayı yükle
+            using (var stream = shelterPhoto.OpenReadStream())
+            {
+                await blobClient.UploadAsync(stream, httpHeaders: new BlobHttpHeaders { ContentType = "image/jpeg" });
+            }
+
+            return blobClient.Uri.ToString();
         }
 
     }

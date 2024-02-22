@@ -14,7 +14,7 @@ using SeniorProject.Services.Blob;
 
 namespace SeniorProject.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class PetController : ControllerBase
     {

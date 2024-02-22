@@ -10,8 +10,8 @@ namespace SeniorProject.Services.Blob
 
         public BlobService()
         {
-            var blobServiceClient = new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=petsconnectedphotos;AccountKey=cAvqprrkiNfUl0GDucYxFNV2yBJ7AWWoGG9U2w8DpW6QgmlSDhCZrcrQ606NAeKs321rJuDjPy+4+ASth214hw==;EndpointSuffix=core.windows.net");
-            _containerClient = blobServiceClient.GetBlobContainerClient("petsconnected");
+            var blobServiceClient = new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=petsconnectedphotos;AccountKey=p6pf/bEUE8DxtlCHFHP8UFL5q6x5ePbACZLc8L6u3CHjMpHxqeHPghV7GAyXiP1qDhtcHcIxyGna+AStUP34qw==;EndpointSuffix=core.windows.net");
+            _containerClient = blobServiceClient.GetBlobContainerClient("petsconnectedphotos");
             
             var blobServiceClient1 = new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=petsconnectedphotos;AccountKey=cAvqprrkiNfUl0GDucYxFNV2yBJ7AWWoGG9U2w8DpW6QgmlSDhCZrcrQ606NAeKs321rJuDjPy+4+ASth214hw==;EndpointSuffix=core.windows.net");
             _containerClient1 = blobServiceClient1.GetBlobContainerClient("shelter");

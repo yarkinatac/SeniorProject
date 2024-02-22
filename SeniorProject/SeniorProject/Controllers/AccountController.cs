@@ -22,10 +22,10 @@ public class AccountController : ControllerBase
         _context = context;
         _configuration = configuration;
     }
-
     // POST: api/Account/Register
+
     [HttpPost("Register")]
-    public IActionResult Register(Register model)
+    public IActionResult Register([FromBody] Register model)
     {
         if (ModelState.IsValid)
         {

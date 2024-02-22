@@ -14,7 +14,7 @@ using SeniorProject.Services.Blob;
 
 namespace SeniorProject.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class PetController : ControllerBase
     {
@@ -62,7 +62,6 @@ namespace SeniorProject.Controllers
             if (pet == null)
                 return BadRequest();
             
-
             var updatedPet = await _context.Pets.FirstOrDefaultAsync(p => p.PetId == pet.PetId);
             
             if (updatedPet == null)

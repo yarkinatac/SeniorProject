@@ -14,7 +14,7 @@ using SeniorProject.Services.Blob;
 
 namespace SeniorProject.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class ShelterController : ControllerBase
     {
@@ -37,7 +37,7 @@ namespace SeniorProject.Controllers
             return await _context.Shelters.Include(s => s.Photos).ToListAsync();
         }
 
-        [HttpPost]
+        [HttpPost("AddShelter")]
         public async Task<IActionResult> AddShelter([FromForm] AddingShelterDto addingShelter)
         {
             
@@ -99,6 +99,30 @@ namespace SeniorProject.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(shelter);
+        }
+        
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteShelter(Guid id)
+        {
+            if (_context.Shelters == null)
+            {
+                return NotFound();
+            }
+            var shelter = await _context.Shelters.FindAsync(id);
+            if (shelter == null)
+            {
+                return NotFound();
+            }
+
+            _context.Shelters.Remove(shelter);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private bool ShelterExist(Guid id)
+        {
+            return (_context.Shelters?.Any(e => e.ShelterId == id)).GetValueOrDefault();
         }
 
     }

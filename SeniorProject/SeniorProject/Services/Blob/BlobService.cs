@@ -10,11 +10,11 @@ namespace SeniorProject.Services.Blob
 
         public BlobService()
         {
-            var blobServiceClient = new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=petsconnected;AccountKey=wKXfutveRXwcefpVrqMDJPr/GeGMEZe8ooRzhOWndTV22Grz9VsmZ1e3nI9h/qE68xEMBQvhPK0Q+AStkM3BPw==;EndpointSuffix=core.windows.net");
+            var blobServiceClient = new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=petsconnectedphotos;AccountKey=cAvqprrkiNfUl0GDucYxFNV2yBJ7AWWoGG9U2w8DpW6QgmlSDhCZrcrQ606NAeKs321rJuDjPy+4+ASth214hw==;EndpointSuffix=core.windows.net");
             _containerClient = blobServiceClient.GetBlobContainerClient("petsconnected");
             
-            var blobServiceClient1 = new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=petsconnected;AccountKey=wKXfutveRXwcefpVrqMDJPr/GeGMEZe8ooRzhOWndTV22Grz9VsmZ1e3nI9h/qE68xEMBQvhPK0Q+AStkM3BPw==;EndpointSuffix=core.windows.net");
-            _containerClient = blobServiceClient1.GetBlobContainerClient("shelter");
+            var blobServiceClient1 = new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=petsconnectedphotos;AccountKey=cAvqprrkiNfUl0GDucYxFNV2yBJ7AWWoGG9U2w8DpW6QgmlSDhCZrcrQ606NAeKs321rJuDjPy+4+ASth214hw==;EndpointSuffix=core.windows.net");
+            _containerClient1 = blobServiceClient1.GetBlobContainerClient("shelter");
         }
 
         public async Task<string> UploadPhotoAsync(IFormFile photo)

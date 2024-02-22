@@ -6,7 +6,15 @@ using Microsoft.OpenApi.Models;
 using SeniorProject.Services.Blob;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin() // Tüm kaynaklardan gelen isteklere izin ver
+            .AllowAnyMethod() // Tüm HTTP metodlarına izin ver
+            .AllowAnyHeader(); // Tüm başlıklara izin ver
+    });
+});
 // Eklemeler
 builder.Services.AddAuthentication()
     .AddGoogle(options =>
@@ -77,6 +85,8 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
+
+app.UseCors("AllowAll");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

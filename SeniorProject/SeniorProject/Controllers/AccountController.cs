@@ -3,11 +3,15 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Google.Apis.Auth;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 using SeniorProject.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.IdentityModel.Tokens.Jwt;
+using Google.Apis.Auth;
 using Microsoft.IdentityModel.Tokens;
 
 [Route("api/[controller]")]
@@ -65,6 +69,44 @@ public class AccountController : ControllerBase
 
         return BadRequest(ModelState);
     }
+    
+    
+
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AuthenticationController : ControllerBase
+    {
+        [HttpPost("google")]
+        public async Task<IActionResult> Google([FromBody] GoogleTokenRequest request)
+        {
+            try
+            {
+                var settings = new GoogleJsonWebSignature.ValidationSettings
+                {
+                    // Burada, token'ın hangi Google API projesi tarafından verildiğini belirten Audience (aud) parametresini doğrulayabilirsiniz.
+                    // Bu genellikle, Google Cloud Console'da oluşturduğunuz Client ID'dir.
+                    Audience = new[] { "YOUR_CLIENT_ID.apps.googleusercontent.com" }
+                };
+
+                var payload = await GoogleJsonWebSignature.ValidateAsync(request.Token, settings);
+                // Token başarılı bir şekilde doğrulanırsa, kullanıcı bilgileri payload içinde yer alır.
+                // Burada kullanıcıyı sisteminize kaydedebilir veya bir JWT token oluşturup geri döndürebilirsiniz.
+
+                return Ok(new { UserId = payload.Subject, Email = payload.Email, Name = payload.Name });
+            }
+            catch (InvalidJwtException)
+            {
+                // Token geçersizse, bir hata mesajı döndür
+                return Unauthorized("Invalid Google token.");
+            }
+        }
+
+        public class GoogleTokenRequest
+        {
+            public string Token { get; set; }
+        }
+    }
+
     
     // Create JWT Token.
     private string GenerateJwtToken(User user)

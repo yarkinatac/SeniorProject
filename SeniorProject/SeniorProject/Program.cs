@@ -6,24 +6,19 @@ using Microsoft.OpenApi.Models;
 using SeniorProject.Services.Blob;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// CORS politikasını daha güvenli bir yapıya taşıyın (örnek olarak, belirli kökenleri beyaz listeye alın)
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", builder =>
+    options.AddPolicy("AllowSpecific", policy =>
     {
-        builder.AllowAnyOrigin() // Tüm kaynaklardan gelen isteklere izin ver
-            .AllowAnyMethod() // Tüm HTTP metodlarına izin ver
-            .AllowAnyHeader(); // Tüm başlıklara izin ver
+        policy.WithOrigins("http://example.com", "https://anotherdomain.com") // Güvenli kökenler
+            .AllowAnyMethod()
+            .AllowAnyHeader();
     });
 });
-// Eklemeler
-builder.Services.AddAuthentication()
-    .AddGoogle(options =>
-    {
-        options.ClientId = "514547504352-34muov5k1lve498art74t6of3ts82rcl.apps.googleusercontent.com";
-        options.ClientSecret = "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";
-    });
 
-
+// Google ve JWT kimlik doğrulaması için yapılandırmalar
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -34,9 +29,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuer = false,
             ValidateAudience = false
         };
+    })
+    .AddGoogle(options =>
+    {
+        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
     });
 
-//VERY IMPORTANT FOR UPLOAD PHOTO
+// Fotoğraf yükleme için gerekli yapılandırma
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     {
@@ -45,23 +45,18 @@ builder.Services.AddControllers()
 
 builder.Services.AddScoped<BlobService>();
 
-
-// Add services to the container.
-builder.Services.AddControllers();
-
+// Veritabanı bağlantısı ve diğer hizmetler
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
 builder.Services.AddDbContext<PetsConnectedDbContext>(options =>
     options.UseSqlServer(connectionString));
 
+builder.Services.AddControllers();
 
-// Swagger eklentileri
+// Swagger yapılandırması ve JWT ile kimlik doğrulama için güvenlik tanımları
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Pets Connected", Version = "v1" });
-
-    // JWT kimlik doğrulama eklemek için aşağıdaki kodu kullanın
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme.",
@@ -86,20 +81,15 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-app.UseCors("AllowAll");
+// CORS middleware'ini kullan
+app.UseCors("AllowSpecific");
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Pets Connected v1");
-
-        // Swagger UI'ı kimlik doğrulama için yapılandırmak için
-        c.OAuthUseBasicAuthenticationWithAccessCodeGrant();
-        c.OAuthClientId("swagger-ui");
-        c.OAuthClientSecret("swagger-ui-secret");
     });
 }
 

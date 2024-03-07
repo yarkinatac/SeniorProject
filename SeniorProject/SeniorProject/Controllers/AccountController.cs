@@ -26,17 +26,29 @@ public class AccountController : ControllerBase
         _context = context;
         _configuration = configuration;
     }
-    // POST: api/Account/Register
+    
 
+    
+    string HashPassword(string password)
+    {
+        SHA256 hash = SHA256.Create();
+        var passwordBytes = Encoding.Default.GetBytes(password);
+        var hashedPassword = hash.ComputeHash(passwordBytes);
+
+        return Convert.ToHexString(hashedPassword);
+    } 
+    // POST: api/Account/Register
     [HttpPost("Register")]
     public IActionResult Register([FromBody] Register model)
     {
         if (ModelState.IsValid)
         {
+
+
             var user = new User
             {
                 Email = model.Email,
-                Password = model.Password, 
+                Password = HashPassword(model.Password), 
                 FirstName = model.FirstName,
                 LastName = model.LastName,
             };
@@ -54,58 +66,64 @@ public class AccountController : ControllerBase
         if (ModelState.IsValid)
         {
             var user = _context.Users.FirstOrDefault(u => u.Email == model.Email);
-            if (user != null && model.Password == user.Password)
+            if (user != null)
             {
-                var token = GenerateJwtToken(user);
+                // Kullanıcının girdiği şifreyi hashle
+                var hashedPassword = HashPassword(model.Password);
 
-                // Token'i kullanıcıya dön
-                return Ok(new { message = "Login successful", token });
+                // Veritabanındaki hashlenmiş şifre ile karşılaştır
+                if (hashedPassword == user.Password)
+                {
+                    var token = GenerateJwtToken(user);
+
+                    // Token'i kullanıcıya dön
+                    return Ok(new { message = "Login successful", token });
+                }
             }
-            else
-            {
-                return Unauthorized(new { message = "Email or password is incorrect." });
-            }
+            // Kullanıcı bulunamadı veya şifre uyuşmadıysa
+            return Unauthorized(new { message = "Email or password is incorrect." });
         }
 
         return BadRequest(ModelState);
     }
+
     
     
 
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AuthenticationController : ControllerBase
-    {
-        [HttpPost("google")]
-        public async Task<IActionResult> Google([FromBody] GoogleTokenRequest request)
-        {
-            try
-            {
-                var settings = new GoogleJsonWebSignature.ValidationSettings
-                {
-                    // Burada, token'ın hangi Google API projesi tarafından verildiğini belirten Audience (aud) parametresini doğrulayabilirsiniz.
-                    // Bu genellikle, Google Cloud Console'da oluşturduğunuz Client ID'dir.
-                    Audience = new[] { "YOUR_CLIENT_ID.apps.googleusercontent.com" }
-                };
-
-                var payload = await GoogleJsonWebSignature.ValidateAsync(request.Token, settings);
-                // Token başarılı bir şekilde doğrulanırsa, kullanıcı bilgileri payload içinde yer alır.
-                // Burada kullanıcıyı sisteminize kaydedebilir veya bir JWT token oluşturup geri döndürebilirsiniz.
-
-                return Ok(new { UserId = payload.Subject, Email = payload.Email, Name = payload.Name });
-            }
-            catch (InvalidJwtException)
-            {
-                // Token geçersizse, bir hata mesajı döndür
-                return Unauthorized("Invalid Google token.");
-            }
-        }
-
-        public class GoogleTokenRequest
-        {
-            public string Token { get; set; }
-        }
-    }
+    // [Route("api/[controller]")]
+    // [ApiController]
+    // public class AuthenticationController : ControllerBase
+    // {
+    //     [HttpPost("google")]
+    //     public async Task<IActionResult> Google([FromBody] GoogleTokenRequest request)
+    //     {
+    //         try
+    //         {
+    //             var settings = new GoogleJsonWebSignature.ValidationSettings
+    //             {
+    //                 // Burada, token'ın hangi Google API projesi tarafından verildiğini belirten Audience (aud) parametresini doğrulayabilirsiniz.
+    //                 // Bu genellikle, Google Cloud Console'da oluşturduğunuz Client ID'dir.
+    //                 Audience = new[] { "YOUR_CLIENT_ID.apps.googleusercontent.com" }
+    //             };
+    //
+    //             var payload = await GoogleJsonWebSignature.ValidateAsync(request.Token, settings);
+    //             // Token başarılı bir şekilde doğrulanırsa, kullanıcı bilgileri payload içinde yer alır.
+    //             // Burada kullanıcıyı sisteminize kaydedebilir veya bir JWT token oluşturup geri döndürebilirsiniz.
+    //
+    //             return Ok(new { UserId = payload.Subject, Email = payload.Email, Name = payload.Name });
+    //         }
+    //         catch (InvalidJwtException)
+    //         {
+    //             // Token geçersizse, bir hata mesajı döndür
+    //             return Unauthorized("Invalid Google token.");
+    //         }
+    //     }
+    //
+    //     public class GoogleTokenRequest
+    //     {
+    //         public string Token { get; set; }
+    //     }
+    // }
 
     
     // Create JWT Token.

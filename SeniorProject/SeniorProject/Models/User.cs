@@ -25,6 +25,9 @@ public class User
     [Required]
     public string Password { get; set; }
 
+    public string PasswordSalting { get; set; }
+
+
     // Navigation property - Bir kullanıcının birden fazla pet'i olabilir
     public virtual ICollection<Pet> Pets { get; set; }
 }

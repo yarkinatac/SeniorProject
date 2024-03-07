@@ -17,6 +17,6 @@ public class Register
 
     [Required]
     public string LastName { get; set; }
-
+    
     
 }

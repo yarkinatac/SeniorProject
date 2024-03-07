@@ -29,12 +29,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuer = false,
             ValidateAudience = false
         };
-    })
-    .AddGoogle(options =>
-    {
-        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
     });
+    // .AddGoogle(options =>
+    // {
+    //     options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+    //     options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    // });
 
 // Fotoğraf yükleme için gerekli yapılandırma
 builder.Services.AddControllers()

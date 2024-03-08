@@ -69,7 +69,7 @@ namespace SeniorProject.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Pets");
+                    b.ToTable("Pets", (string)null);
                 });
 
             modelBuilder.Entity("SeniorProject.Models.PetPhoto", b =>
@@ -89,7 +89,7 @@ namespace SeniorProject.Migrations
 
                     b.HasIndex("PetId");
 
-                    b.ToTable("PetPhotos");
+                    b.ToTable("PetPhotos", (string)null);
                 });
 
             modelBuilder.Entity("SeniorProject.Models.Shelter", b =>
@@ -138,7 +138,7 @@ namespace SeniorProject.Migrations
 
                     b.HasKey("ShelterId");
 
-                    b.ToTable("Shelters");
+                    b.ToTable("Shelters", (string)null);
                 });
 
             modelBuilder.Entity("SeniorProject.Models.ShelterPhoto", b =>
@@ -158,7 +158,7 @@ namespace SeniorProject.Migrations
 
                     b.HasIndex("ShelterId");
 
-                    b.ToTable("ShelterPhotos");
+                    b.ToTable("ShelterPhotos", (string)null);
                 });
 
             modelBuilder.Entity("SeniorProject.Models.User", b =>
@@ -192,7 +192,7 @@ namespace SeniorProject.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("SeniorProject.Models.Pet", b =>

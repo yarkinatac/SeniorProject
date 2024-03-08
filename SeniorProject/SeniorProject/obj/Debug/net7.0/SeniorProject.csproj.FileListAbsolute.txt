@@ -752,3 +752,8 @@
 /Users/yarkinatac/Development/SENIORPROJECT/dotnet/SeniorProject/SeniorProject/SeniorProject/bin/Debug/net7.0/Mvc.Grid.Core.dll
 /Users/yarkinatac/Development/SENIORPROJECT/dotnet/SeniorProject/SeniorProject/SeniorProject/bin/Debug/net7.0/System.Management.dll
 /Users/yarkinatac/Development/SENIORPROJECT/dotnet/SeniorProject/SeniorProject/SeniorProject/bin/Debug/net7.0/runtimes/win/lib/net7.0/System.Management.dll
+/Users/berkayceylan/Development/SeniorProject/SeniorProject/SeniorProject/bin/Debug/net7.0/Google.Apis.dll
+/Users/berkayceylan/Development/SeniorProject/SeniorProject/SeniorProject/bin/Debug/net7.0/Google.Apis.Auth.dll
+/Users/berkayceylan/Development/SeniorProject/SeniorProject/SeniorProject/bin/Debug/net7.0/Google.Apis.Core.dll
+/Users/berkayceylan/Development/SeniorProject/SeniorProject/SeniorProject/bin/Debug/net7.0/System.Management.dll
+/Users/berkayceylan/Development/SeniorProject/SeniorProject/SeniorProject/bin/Debug/net7.0/runtimes/win/lib/net7.0/System.Management.dll

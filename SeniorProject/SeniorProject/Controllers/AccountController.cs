@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.IdentityModel.Tokens.Jwt;
 using Google.Apis.Auth;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 [Route("api/[controller]")]
@@ -85,6 +86,28 @@ public class AccountController : ControllerBase
         }
 
         return BadRequest(ModelState);
+    }
+    
+    [HttpDelete("DeleteUser/{id}")]
+    public async Task<IActionResult> DeleteUser(Guid id)
+    {
+        var user = await _context.Users.Include(u => u.Pets).FirstOrDefaultAsync(u => u.UserId== id);
+        if (user == null)
+        {
+            return NotFound(new { message = "User not found." });
+        }
+
+        // Kullanıcıya ait evcil hayvanları sil
+        if (user.Pets.Any())
+        {
+            _context.Pets.RemoveRange(user.Pets);
+        }
+
+        // Sonra kullanıcıyı sil
+        _context.Users.Remove(user);
+        await _context.SaveChangesAsync();
+
+        return Ok(new { message = "User and their pets deleted successfully." });
     }
 
     

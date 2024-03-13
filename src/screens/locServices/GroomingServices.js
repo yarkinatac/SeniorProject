@@ -46,7 +46,7 @@ const GroomingServices = () => {
       <TouchableOpacity
         style={styles.backButtonContainer}
         onPress={() => {
-          navigation.goBack();
+          navigation.navigate("HomeScreen");
         }}
       >
         <Image source={ArrowLeft} style={styles.backButton} />

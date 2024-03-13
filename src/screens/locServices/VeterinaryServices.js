@@ -46,7 +46,7 @@ const VeterinaryServices = () => {
     },
   ];
   const handleServiceSelect = (screen) => {
-    navigation.navigate(screen);
+    navigation.navigate("screen");
   };
 
   return (
@@ -54,7 +54,7 @@ const VeterinaryServices = () => {
       <TouchableOpacity
         style={styles.backButtonContainer}
         onPress={() => {
-          navigation.goBack();
+          navigation.navigate("HomeScreen");
         }}
       >
         <Image source={ArrowLeft} style={styles.backButton} />

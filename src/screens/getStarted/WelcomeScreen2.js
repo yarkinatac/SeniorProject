@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import PaginationDots from "../../components/PaginationDots"; 
 import welcomeGif from "../../assets/gifs/welcomeScreens/welcomeScreen2.gif";
-import CustomButton from "../../components/buttons/WelcomeScreenButton";
+import Button from "../../components/buttons/WelcomeScreenButton";
 
 const WelcomeScreen2 = ({ navigation }) => {
   return (
@@ -17,7 +17,7 @@ const WelcomeScreen2 = ({ navigation }) => {
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc urna
           libero, dapibus quis augue quis, aliquet dapibus massa.
         </Text>
-        <CustomButton
+        <Button
           title="Next"
           onPress={() => navigation.navigate("WelcomeScreen3")}
         />

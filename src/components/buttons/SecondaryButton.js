@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 
-const WhiteButton = ({ title, onPress }) => (
+const SecondaryButton = ({ title, onPress }) => (
   <TouchableOpacity style={styles.button} onPress={onPress}>
     <Text style={styles.text}>{title}</Text>
   </TouchableOpacity>
@@ -28,4 +28,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WhiteButton;
+export default SecondaryButton;

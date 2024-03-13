@@ -55,16 +55,8 @@ function MainAppNavigator() {
       <Stack.Screen name='SearchPetSitter2' component={SearchPetSitter2} options={{headerShown:false}}/>
       <Stack.Screen name='SearchPetSitter3' component={SearchPetSitter3} options={{headerShown:false}}/>
 
-      
-
       {/* <MainStack.Screen name='Home' component={NavBar} options={{headerShown: false}}/> */}
-  
-  
-
-
-
-      {/* The main part of the app, which includes the tabs, should be the last in your stack */}
-    </Stack.Navigator>
+      </Stack.Navigator>
   );
 }
 

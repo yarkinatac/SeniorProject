@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import DarkBrownButton from "../../components/buttons/DarkBrownButton";
-import WhiteButton from "../../components/buttons/WhiteButton";
+import SecondaryButton from "../../components/buttons/SecondaryButton";
 import ForgetPasswordImage1 from "../../assets/images/login/forget-password-1.png"
 import InputComponent from "../../components/inputs/InputComponent";
 
@@ -33,7 +33,7 @@ const ForgotPassword1 = ({}) => {
         />
       </View>
       <View style={styles.buttonContainer}>
-        <WhiteButton
+        <SecondaryButton
           title="Back To Login"
           onPress={() => navigation.goBack()}
           width={140} 

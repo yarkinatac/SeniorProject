@@ -10,13 +10,14 @@ var builder = WebApplication.CreateBuilder(args);
 // CORS politikasını daha güvenli bir yapıya taşıyın (örnek olarak, belirli kökenleri beyaz listeye alın)
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecific", policy =>
+    options.AddPolicy("AllowAll", policy =>
     {
-        policy.WithOrigins("http://example.com", "https://anotherdomain.com") // Güvenli kökenler
+        policy.AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader();
     });
 });
+
 
 // Google ve JWT kimlik doğrulaması için yapılandırmalar
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -82,7 +83,8 @@ builder.Services.AddSwaggerGen(c =>
 var app = builder.Build();
 
 // CORS middleware'ini kullan
-app.UseCors("AllowSpecific");
+app.UseCors("AllowAll");
+
 
 if (app.Environment.IsDevelopment())
 {

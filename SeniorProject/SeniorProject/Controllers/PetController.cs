@@ -31,7 +31,7 @@ namespace SeniorProject.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable>> GetPets()
         {
-          if (_context.Pets == null)
+          if (_context.Pets == null)    
           {
               return NotFound();
           }

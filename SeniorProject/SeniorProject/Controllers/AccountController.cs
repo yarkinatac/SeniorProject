@@ -3,13 +3,9 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Google.Apis.Auth;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+
 
 using SeniorProject.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.IdentityModel.Tokens.Jwt;
 using Google.Apis.Auth;
 using Microsoft.EntityFrameworkCore;
@@ -30,26 +26,17 @@ public class AccountController : ControllerBase
     
 
     
-    string HashPassword(string password)
-    {
-        SHA256 hash = SHA256.Create();
-        var passwordBytes = Encoding.Default.GetBytes(password);
-        var hashedPassword = hash.ComputeHash(passwordBytes);
-
-        return Convert.ToHexString(hashedPassword);
-    } 
+   
     // POST: api/Account/Register
     [HttpPost("Register")]
-    public IActionResult Register([FromBody] Register model)
+    public IActionResult Register([FromBody] Register model)    
     {
         if (ModelState.IsValid)
         {
-
-
             var user = new User
             {
                 Email = model.Email,
-                Password = HashPassword(model.Password), 
+                Password = model.Password, 
                 FirstName = model.FirstName,
                 LastName = model.LastName,
             };
@@ -69,11 +56,8 @@ public class AccountController : ControllerBase
             var user = _context.Users.FirstOrDefault(u => u.Email == model.Email);
             if (user != null)
             {
-                // Kullanıcının girdiği şifreyi hashle
-                var hashedPassword = HashPassword(model.Password);
-
-                // Veritabanındaki hashlenmiş şifre ile karşılaştır
-                if (hashedPassword == user.Password)
+                var password = model.Password;
+                if (password == user.Password)
                 {
                     var token = GenerateJwtToken(user);
 

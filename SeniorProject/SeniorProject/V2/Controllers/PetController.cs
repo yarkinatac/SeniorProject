@@ -12,9 +12,9 @@ using SeniorProject.Models;
 using SeniorProject.Models.Dto;
 using SeniorProject.Services.Blob;
 
-namespace SeniorProject.Controllers
+namespace SeniorProject.V2.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v2/[controller]")]
     [ApiController]
     public class PetController : ControllerBase
     {

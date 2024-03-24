@@ -12,9 +12,9 @@ using SeniorProject.Models;
 using SeniorProject.Models.Dto;
 using SeniorProject.Services.Blob;
 
-namespace SeniorProject.Controllers
+namespace SeniorProject.V1.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class ShelterController : ControllerBase
     {

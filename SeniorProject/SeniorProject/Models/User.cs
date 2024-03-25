@@ -26,9 +26,7 @@ public class User
     public string Password { get; set; }
 
     public bool isClicked { get; set; }
-
-
-
+    
     // Navigation property - Bir kullanıcının birden fazla pet'i olabilir
     public virtual ICollection<Pet> Pets { get; set; }
 }

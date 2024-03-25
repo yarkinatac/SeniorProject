@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -28,7 +29,79 @@ namespace SeniorProject.V2.Controllers
             _configuration = configuration;
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GetUser(Guid id)
+        {
+            var user = await _context.Users
+                .Where(u => u.UserId == id)
+                .Select(u => new
+                {
+                    u.UserId,
+                    u.FirstName,
+                    u.LastName,
+                    u.Email,
+                    u.isClicked,
+                    Pets = u.Pets.Select(p => new
+                    {
+                        p.PetId,
+                        p.Name,
+                        p.Type,
+                        p.Age,
+                        p.Breed,
+                        p.Sex,
+                        p.Distance,
+                        p.Size,
+                        p.Shedding,
+                        p.Personality,
+                        Photos = p.Photos.Select(photo => new
+                        {
+                            photo.PhotoUrl
+                            // Diğer fotoğraf bilgileri burada döndürülebilir.
+                        }).ToList()
+                    }).ToList()
+                })
+                .FirstOrDefaultAsync();
 
+            if (user == null)
+            {
+                return NotFound(new { message = "User not found." });
+            }
+
+            return Ok(user);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable>> GetUsers()
+        {
+            if (_context.Users == null)
+            {
+                return NotFound();
+            }
+
+            // Kullanıcı listesi döndürülürken, her bir kullanıcı için pet bilgileri de dahil edilir
+            var users = await _context.Users.Include(x => x.Pets).Select(user => new
+            {
+                user.UserId,
+                user.Email,
+                user.FirstName,
+                user.LastName,
+                user.isClicked,
+                Pets = user.Pets.Select(pet => new 
+                {
+                    pet.PetId,
+                    pet.Name,
+                    pet.Type,
+                    pet.Breed,
+                    pet.Photos,
+                    pet.Age,
+                    pet.Distance,
+                    pet.Personality,
+                    pet.Sex
+                }).ToList()
+            }).ToListAsync();
+
+            return Ok(users);
+        }
 
 
         // POST: api/Account/Register

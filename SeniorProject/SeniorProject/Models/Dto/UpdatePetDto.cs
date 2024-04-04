@@ -12,5 +12,6 @@ public class UpdatePetDto
     public string? Size { get; set; }
     public string? Shedding { get; set; }
     public string? Personality { get; set; }
-    public IFormFile? PetPhoto { get; set; } 
+    public IFormFile? PetPhoto { get; set; }
+    public string Bio { get; set; }
 }

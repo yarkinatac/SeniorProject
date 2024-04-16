@@ -26,6 +26,8 @@ public class Pet
     public string Shedding { get; set; } // Tüy Dökme (Low, Medium, High)
     public string Personality { get; set; } // Kişilik (Energetic, Calm, Aggressive, Affectionate, Shy, Curious)
 
+    public string Bio { get; set; }
+
     // Foreign Key
     public Guid UserId { get; set; }
 

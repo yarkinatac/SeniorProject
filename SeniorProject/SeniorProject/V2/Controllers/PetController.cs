@@ -76,6 +76,7 @@ namespace SeniorProject.V2.Controllers
             updatedPet.Shedding = string.IsNullOrEmpty(pet.Shedding) ? updatedPet.Shedding : pet.Shedding;
             updatedPet.Personality = string.IsNullOrEmpty(pet.Personality) ? updatedPet.Personality : pet.Personality;
             updatedPet.Distance = pet.Distance.HasValue ? pet.Distance.Value : updatedPet.Distance;
+            updatedPet.Bio = string.IsNullOrEmpty(pet.Bio) ? pet.Bio : updatedPet.Bio;
             
             if (pet.PetPhoto != null)
             {
@@ -118,7 +119,8 @@ namespace SeniorProject.V2.Controllers
                 Photos = new List<PetPhoto>
                 {
                     new PetPhoto { PhotoUrl = photoUrl } 
-                }
+                },
+                Bio = combinedDto.Bio,
             };
             _context.Pets.Add(pet);
             await _context.SaveChangesAsync();

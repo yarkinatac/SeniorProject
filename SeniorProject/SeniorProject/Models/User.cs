@@ -27,6 +27,11 @@ public class User
 
     public bool isClicked { get; set; }
     
+    
+    public int NumberofSittings { get; set; }
+    
+    public int PetsCount { get; set; }
+    
     // Navigation property - Bir kullanıcının birden fazla pet'i olabilir
     public virtual ICollection<Pet> Pets { get; set; }
 }

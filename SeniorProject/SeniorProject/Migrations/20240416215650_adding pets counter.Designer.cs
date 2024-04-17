@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace SeniorProject.Migrations
 {
     [DbContext(typeof(PetsConnectedDbContext))]
-    partial class PetsConnectedDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240416215650_adding pets counter")]
+    partial class addingpetscounter
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -20,36 +23,6 @@ namespace SeniorProject.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("SeniorProject.Models.MatchRequest", b =>
-                {
-                    b.Property<Guid>("MatchRequestId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ReceiverPetId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("RequestDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ResponseDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("SenderPetId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.HasKey("MatchRequestId");
-
-                    b.HasIndex("ReceiverPetId");
-
-                    b.HasIndex("SenderPetId");
-
-                    b.ToTable("MatchRequests");
-                });
 
             modelBuilder.Entity("SeniorProject.Models.Pet", b =>
                 {
@@ -216,9 +189,6 @@ namespace SeniorProject.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int>("NumberofSittings")
-                        .HasColumnType("int");
-
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -232,25 +202,6 @@ namespace SeniorProject.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("SeniorProject.Models.MatchRequest", b =>
-                {
-                    b.HasOne("SeniorProject.Models.Pet", "ReceiverPet")
-                        .WithMany()
-                        .HasForeignKey("ReceiverPetId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SeniorProject.Models.Pet", "SenderPet")
-                        .WithMany()
-                        .HasForeignKey("SenderPetId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ReceiverPet");
-
-                    b.Navigation("SenderPet");
                 });
 
             modelBuilder.Entity("SeniorProject.Models.Pet", b =>

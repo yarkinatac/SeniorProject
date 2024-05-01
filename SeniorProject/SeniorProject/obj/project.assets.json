@@ -3669,19 +3669,19 @@
     ]
   },
   "packageFolders": {
-    "/Users/berkayceylan/.nuget/packages/": {}
+    "/Users/yarkinatac/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/berkayceylan/Development/SeniorProject/SeniorProject/SeniorProject/SeniorProject.csproj",
+      "projectUniqueName": "/Users/yarkinatac/Development/SENIORPROJECT/dotnet/SeniorProject/SeniorProject/SeniorProject/SeniorProject.csproj",
       "projectName": "SeniorProject",
-      "projectPath": "/Users/berkayceylan/Development/SeniorProject/SeniorProject/SeniorProject/SeniorProject.csproj",
-      "packagesPath": "/Users/berkayceylan/.nuget/packages/",
-      "outputPath": "/Users/berkayceylan/Development/SeniorProject/SeniorProject/SeniorProject/obj/",
+      "projectPath": "/Users/yarkinatac/Development/SENIORPROJECT/dotnet/SeniorProject/SeniorProject/SeniorProject/SeniorProject.csproj",
+      "packagesPath": "/Users/yarkinatac/.nuget/packages/",
+      "outputPath": "/Users/yarkinatac/Development/SENIORPROJECT/dotnet/SeniorProject/SeniorProject/SeniorProject/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/berkayceylan/.nuget/NuGet/NuGet.Config"
+        "/Users/yarkinatac/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
@@ -3797,7 +3797,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.406/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.100/RuntimeIdentifierGraph.json"
       }
     }
   }

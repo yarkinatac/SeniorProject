@@ -12,29 +12,29 @@ public class Shelter
 
     [Required]
     [MaxLength(256)]
-    public string Name { get; set; }
+    public string ShelterName { get; set; }
     
     [Required]
     public string Address { get; set; }
 
-    public string City { get; set; }
+    public string? City { get; set; }
 
-    public string State { get; set; }
+    public string? State { get; set; }
+    
+    public string PermitNumber { get; set; }
 
-    public string ZipCode { get; set; }
+    public string RepName { get; set; }
 
     [Required]
     [MaxLength(15)]
-    public string PhoneNumber { get; set; }
+    public string RepPhone { get; set; }
 
     [Required]
-    public string Email { get; set; }
+    public string RepEmail { get; set; }
 
-    public string WebsiteUrl { get; set; }
-
-    public string AdditionalInformation { get; set; }
+    public string? WebsiteUrl { get; set; }
     
-    public virtual ICollection<ShelterPhoto> Photos { get; set; }
+    // public virtual ICollection<ShelterPhoto>? Photos { get; set; }
 
 
     // You can add more properties as needed for your application

@@ -38,8 +38,8 @@ namespace SeniorProject.V1.Controllers
                 {
                     Email = model.Email,
                     Password = model.Password,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
+                    Fullname = model.Fullname,
+                    
                 };
 
                 _context.Users.Add(user);

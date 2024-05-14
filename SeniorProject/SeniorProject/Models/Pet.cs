@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using SeniorProject.Data.Enum;
 
 namespace SeniorProject.Models;
 
@@ -21,12 +22,17 @@ public class Pet
     // Yeni eklenen özellikler
     public string Breed { get; set; } // Cins
     public string Sex { get; set; } // Cinsiyet
+
+    public string HealthInfo { get; set; }
     public double Distance { get; set; } // Mesafe (kullanıcının konumuna olan uzaklık)
     public string Size { get; set; } // Boyut (X Small, Small, Medium, Large, X Large)
     public string Shedding { get; set; } // Tüy Dökme (Low, Medium, High)
     public string Personality { get; set; } // Kişilik (Energetic, Calm, Aggressive, Affectionate, Shy, Curious)
 
     public string Bio { get; set; }
+    
+    public AdvertType AdverdType { get; set; }
+
 
     // Foreign Key
     public Guid UserId { get; set; }

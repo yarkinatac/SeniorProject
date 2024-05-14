@@ -1,3 +1,5 @@
+using SeniorProject.Data.Enum;
+
 namespace SeniorProject.Models.Dto;
 
 public class CombinedDto
@@ -12,5 +14,9 @@ public class CombinedDto
     public string Shedding { get; set; }
     public string Personality { get; set; }
     public string  Bio { get; set; }
+
+    public string HealthInfo { get; set; }
+
+    public AdvertType AdvertType { get; set; }
     public IFormFile PetPhoto { get; set; } = null!;
 }

@@ -34,7 +34,7 @@ namespace SeniorProject.V1.Controllers
             {
                 return NotFound();
             }
-            return await _context.Shelters.Include(s => s.Photos).ToListAsync();
+            return await _context.Shelters.ToListAsync();
         }
 
         [HttpPost("AddShelter")]
@@ -42,28 +42,28 @@ namespace SeniorProject.V1.Controllers
         {
             
             // Fotoğrafı Azure Blob Storage'a yükle
-            var photoUrl = await _blobService.UploadShelterPhotoAsync(addingShelter.ShelterPhoto, addingShelter.Name);
+            // var photoUrl = await _blobService.UploadShelterPhotoAsync(addingShelter.ShelterPhoto, addingShelter.ShelterName);
 
             var shelter = new Shelter
             {
-                Name = addingShelter.Name,
+                ShelterName = addingShelter.ShelterName,
                 Address = addingShelter.Address,
                 City = addingShelter.City,
                 State = addingShelter.State,
-                ZipCode = addingShelter.ZipCode,
-                PhoneNumber = addingShelter.PhoneNumber,
-                Email = addingShelter.Email,
+                PermitNumber = addingShelter.PermitNumber,
+                RepPhone = addingShelter.RepPhone,
+                RepEmail = addingShelter.RepEmail,
                 WebsiteUrl = addingShelter.WebsiteUrl,
-                AdditionalInformation = addingShelter.AdditionalInformation,
-                Photos = new List<ShelterPhoto>
-                {
-                    new ShelterPhoto { PhotoUrl = photoUrl } 
-                }
+                
+                // Photos = new List<ShelterPhoto>
+                // {
+                //     new ShelterPhoto { PhotoUrl = photoUrl } 
+                // }
             };
             _context.Shelters.Add(shelter);
             await _context.SaveChangesAsync();
             var data = _context.Shelters
-                .Include(s => s.Photos) // Include photos of the shelter
+                // .Include(s => s.Photos) // Include photos of the shelter
                 .FirstOrDefault(s => s.ShelterId == shelter.ShelterId);
             return Ok(data);
         }
@@ -81,20 +81,17 @@ namespace SeniorProject.V1.Controllers
                 return NotFound();
 
             updatedShelter.Address = string.IsNullOrEmpty(shelter.Address) ? updatedShelter.Address : shelter.Address;
-            updatedShelter.Name = string.IsNullOrEmpty(shelter.Name) ? updatedShelter.Name : shelter.Name;
+            updatedShelter.ShelterName = string.IsNullOrEmpty(shelter.ShelterName) ? updatedShelter.ShelterName : shelter.ShelterName;
             updatedShelter.City = string.IsNullOrEmpty(shelter.City) ? updatedShelter.City : shelter.City;
             updatedShelter.State = string.IsNullOrEmpty(shelter.State) ? updatedShelter.State : shelter.State;
-            updatedShelter.ZipCode = string.IsNullOrEmpty(shelter.ZipCode) ? updatedShelter.ZipCode : shelter.ZipCode;
             updatedShelter.WebsiteUrl = string.IsNullOrEmpty(shelter.WebsiteUrl) ? updatedShelter.WebsiteUrl : shelter.WebsiteUrl;
-            updatedShelter.AdditionalInformation = string.IsNullOrEmpty(shelter.AdditionalInformation) ? updatedShelter.AdditionalInformation : shelter.AdditionalInformation;
-            updatedShelter.Email = string.IsNullOrEmpty(shelter.Email) ? updatedShelter.Email : shelter.Email;
-            updatedShelter.PhoneNumber = string.IsNullOrEmpty(shelter.PhoneNumber) ? updatedShelter.PhoneNumber : shelter.PhoneNumber;
-            
-            if (shelter.ShelterPhoto != null)
-            {
-                var photoUrl = await _blobService.UploadShelterPhotoAsync(shelter.ShelterPhoto, shelter.Name);
-
-            }
+            updatedShelter.RepEmail = string.IsNullOrEmpty(shelter.Email) ? updatedShelter.RepEmail : shelter.Email;
+            updatedShelter.RepPhone = string.IsNullOrEmpty(shelter.PhoneNumber) ? updatedShelter.RepPhone : shelter.PhoneNumber;
+            // if (shelter.ShelterPhoto != null)
+            // {
+            //     var photoUrl = await _blobService.UploadShelterPhotoAsync(shelter.ShelterPhoto, shelter.ShelterName);
+            //
+            // }
             
             await _context.SaveChangesAsync();
 

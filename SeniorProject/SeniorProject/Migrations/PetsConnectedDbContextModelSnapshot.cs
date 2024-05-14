@@ -57,6 +57,9 @@ namespace SeniorProject.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("AdverdType")
+                        .HasColumnType("int");
+
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
@@ -70,6 +73,10 @@ namespace SeniorProject.Migrations
 
                     b.Property<double>("Distance")
                         .HasColumnType("float");
+
+                    b.Property<string>("HealthInfo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -132,42 +139,39 @@ namespace SeniorProject.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("AdditionalInformation")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PermitNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("RepEmail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("RepName")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PhoneNumber")
+                    b.Property<string>("RepPhone")
                         .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
-                    b.Property<string>("State")
+                    b.Property<string>("ShelterName")
                         .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("WebsiteUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ZipCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ShelterId");
@@ -206,15 +210,16 @@ namespace SeniorProject.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("FirstName")
+                    b.Property<string>("Fullname")
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                    b.Property<double?>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Longitude")
+                        .HasColumnType("float");
 
                     b.Property<int>("NumberofSittings")
                         .HasColumnType("int");
@@ -226,8 +231,9 @@ namespace SeniorProject.Migrations
                     b.Property<int>("PetsCount")
                         .HasColumnType("int");
 
-                    b.Property<bool>("isClicked")
-                        .HasColumnType("bit");
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId");
 
@@ -278,7 +284,7 @@ namespace SeniorProject.Migrations
             modelBuilder.Entity("SeniorProject.Models.ShelterPhoto", b =>
                 {
                     b.HasOne("SeniorProject.Models.Shelter", "Shelter")
-                        .WithMany("Photos")
+                        .WithMany()
                         .HasForeignKey("ShelterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -287,11 +293,6 @@ namespace SeniorProject.Migrations
                 });
 
             modelBuilder.Entity("SeniorProject.Models.Pet", b =>
-                {
-                    b.Navigation("Photos");
-                });
-
-            modelBuilder.Entity("SeniorProject.Models.Shelter", b =>
                 {
                     b.Navigation("Photos");
                 });

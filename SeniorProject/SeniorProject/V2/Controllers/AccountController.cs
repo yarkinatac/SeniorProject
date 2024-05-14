@@ -36,11 +36,10 @@ namespace SeniorProject.V2.Controllers
                 .Where(u => u.UserId == id)
                 .Select(u => new
                 {
+                    u.PhoneNumber,
                     u.UserId,
-                    u.FirstName,
-                    u.LastName,
+                    u.Fullname,
                     u.Email,
-                    u.isClicked,
                     Pets = u.Pets.Select(p => new
                     {
                         p.PetId,
@@ -81,11 +80,10 @@ namespace SeniorProject.V2.Controllers
             // Kullanıcı listesi döndürülürken, her bir kullanıcı için pet bilgileri de dahil edilir
             var users = await _context.Users.Include(x => x.Pets).Select(user => new
             {
+                user.PhoneNumber,
                 user.UserId,
                 user.Email,
-                user.FirstName,
-                user.LastName,
-                user.isClicked,
+                user.Fullname,
                 Pets = user.Pets.Select(pet => new 
                 {
                     pet.PetId,
@@ -114,8 +112,8 @@ namespace SeniorProject.V2.Controllers
                 {
                     Email = model.Email,
                     Password = model.Password,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
+                    Fullname = model.Fullname,
+                    PhoneNumber = model.PhoneNumber
                 };
 
                 _context.Users.Add(user);

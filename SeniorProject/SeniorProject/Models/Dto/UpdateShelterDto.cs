@@ -3,7 +3,7 @@ namespace SeniorProject.Models.Dto;
 public class UpdateShelterDto
 {
     public Guid? ShelterId { get; set; }
-    public string? Name { get; set; }
+    public string? ShelterName { get; set; }
     
     public string? Address { get; set; }
 
@@ -21,5 +21,5 @@ public class UpdateShelterDto
 
     public string? AdditionalInformation { get; set; }
     
-    public IFormFile? ShelterPhoto { get; set; } 
+    // public IFormFile? ShelterPhoto { get; set; } 
 }

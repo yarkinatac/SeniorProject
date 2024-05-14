@@ -15,6 +15,8 @@ namespace SeniorProject.Services.Blob
             
             var blobServiceClient1 = new BlobServiceClient("DefaultEndpointsProtocol=https;AccountName=petsconnectedphotos;AccountKey=Ai3I+GaUswgWzmh/ZwiLSTl6TRKWuWgWMdqaCM6TXE1z76gkmI475S9QzFGr+pPsGBDfgnwyiwNf+AStzGP6+w==;EndpointSuffix=core.windows.net");
             _containerClient1 = blobServiceClient1.GetBlobContainerClient("shelters");
+            
+            
         }
 
         public async Task<string> UploadPhotoAsync(IFormFile photo)

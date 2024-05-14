@@ -114,6 +114,7 @@ namespace SeniorProject.V1.Controllers
                 Size = combinedDto.Size,
                 Shedding = combinedDto.Shedding,
                 Personality = combinedDto.Personality,
+                HealthInfo = combinedDto.HealthInfo,
                 UserId = userId,
                 Photos = new List<PetPhoto>
                 {

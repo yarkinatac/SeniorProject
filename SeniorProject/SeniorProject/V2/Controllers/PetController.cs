@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SeniorProject.Data.Enum;
 using SeniorProject.Models;
 using SeniorProject.Models.Dto;
 using SeniorProject.Services.Blob;
@@ -116,6 +117,8 @@ namespace SeniorProject.V2.Controllers
                 Shedding = combinedDto.Shedding,
                 Personality = combinedDto.Personality,
                 UserId = userId,
+                HealthInfo = combinedDto.HealthInfo,
+                AdverdType = combinedDto.AdvertType,
                 Photos = new List<PetPhoto>
                 {
                     new PetPhoto { PhotoUrl = photoUrl } 

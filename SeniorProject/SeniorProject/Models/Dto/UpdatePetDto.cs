@@ -1,3 +1,5 @@
+using SeniorProject.Data.Enum;
+
 namespace SeniorProject.Models.Dto;
 
 public class UpdatePetDto
@@ -14,4 +16,6 @@ public class UpdatePetDto
     public string? Personality { get; set; }
     public IFormFile? PetPhoto { get; set; }
     public string Bio { get; set; }
+    
+    public AdvertType AdvertType { get; set; }
 }

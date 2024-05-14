@@ -9,6 +9,8 @@ public class PetDto
     public string Size { get; set; }
     public string Shedding { get; set; }
     public string Personality { get; set; }
+
+    public string HealthInfo { get; set; }
     
    
 

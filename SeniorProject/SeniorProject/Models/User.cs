@@ -25,8 +25,6 @@ public class User
 
     [Required]
     public string Password { get; set; }
-
-    
     
     public int NumberofSittings { get; set; }
     

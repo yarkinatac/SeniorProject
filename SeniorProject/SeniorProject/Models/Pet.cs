@@ -32,8 +32,9 @@ public class Pet
     public string Bio { get; set; }
     
     public AdvertType AdvertType { get; set; }
+    public DateTime? Start { get; set; }
 
-
+    public DateTime? End { get; set; }
     // Foreign Key
     public Guid UserId { get; set; }
 

@@ -119,6 +119,8 @@ namespace SeniorProject.V2.Controllers
                 UserId = userId,
                 HealthInfo = combinedDto.HealthInfo,
                 AdvertType = combinedDto.AdvertType,
+                Start = combinedDto.Start,
+                End = combinedDto.End,
                 Photos = new List<PetPhoto>
                 {
                     new PetPhoto { PhotoUrl = photoUrl } 
@@ -144,6 +146,44 @@ namespace SeniorProject.V2.Controllers
             return Guid.Empty;
         }
 
+
+        [HttpPost("AddToFavorites/{petId}")]
+        [Authorize] // Giriş yapmış kullanıcıları kabul et
+        public async Task<ActionResult> AddToFavorites(Guid petId)
+        {
+            var userId = GetUserIdFromToken(); // Token'dan UserId elde et
+
+            if (userId == Guid.Empty)
+            {
+                return NotFound(new { message = "User not found." });
+            }
+
+            var pet = await _context.Pets.FindAsync(petId);
+
+            if (pet == null)
+            {
+                return NotFound(new { message = "Pet not found." });
+            }
+
+            var existingFavorite = await _context.Favorites
+                .FirstOrDefaultAsync(f => f.UserId == userId && f.PetId == petId);
+
+            if (existingFavorite != null)
+            {
+                return BadRequest(new { message = "Pet is already in favorites." });
+            }
+
+            var favorite = new Favorite
+            {
+                UserId = userId,
+                PetId = petId
+            };
+
+            _context.Favorites.Add(favorite);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Pet added to favorites." });
+        }
 
 
 

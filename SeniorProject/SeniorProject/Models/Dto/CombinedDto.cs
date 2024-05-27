@@ -16,7 +16,9 @@ public class CombinedDto
     public string  Bio { get; set; }
 
     public string HealthInfo { get; set; }
+    public DateTime? Start { get; set; }
 
+    public DateTime? End { get; set; }
     public AdvertType AdvertType { get; set; }
     public IFormFile PetPhoto { get; set; } = null!;
 }

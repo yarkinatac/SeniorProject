@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace SeniorProject.Migrations
 {
     [DbContext(typeof(PetsConnectedDbContext))]
-    partial class PetsConnectedDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240524111057_advertype")]
+    partial class advertype
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -20,27 +23,6 @@ namespace SeniorProject.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("SeniorProject.Models.Favorite", b =>
-                {
-                    b.Property<Guid>("FavoriteId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("PetId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("FavoriteId");
-
-                    b.HasIndex("PetId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Favorites");
-                });
 
             modelBuilder.Entity("SeniorProject.Models.MatchRequest", b =>
                 {
@@ -95,9 +77,6 @@ namespace SeniorProject.Migrations
                     b.Property<double?>("Distance")
                         .HasColumnType("float");
 
-                    b.Property<DateTime?>("End")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("HealthInfo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -122,9 +101,6 @@ namespace SeniorProject.Migrations
                     b.Property<string>("Size")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("Start")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -267,25 +243,6 @@ namespace SeniorProject.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("SeniorProject.Models.Favorite", b =>
-                {
-                    b.HasOne("SeniorProject.Models.Pet", "Pet")
-                        .WithMany()
-                        .HasForeignKey("PetId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("SeniorProject.Models.User", "User")
-                        .WithMany("Favorites")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Pet");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("SeniorProject.Models.MatchRequest", b =>
                 {
                     b.HasOne("SeniorProject.Models.Pet", "ReceiverPet")
@@ -345,8 +302,6 @@ namespace SeniorProject.Migrations
 
             modelBuilder.Entity("SeniorProject.Models.User", b =>
                 {
-                    b.Navigation("Favorites");
-
                     b.Navigation("Pets");
                 });
 #pragma warning restore 612, 618

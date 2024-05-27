@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
 namespace SeniorProject.Models;
 
 public class User
@@ -12,8 +11,7 @@ public class User
     [Required]
     [MaxLength(256)]
     public string Fullname { get; set; }
-    
-
+   
     [Required]
     [Phone]
     public string PhoneNumber { get; set; }
@@ -36,4 +34,8 @@ public class User
     
     // Navigation property - Bir kullanıcının birden fazla pet'i olabilir
     public virtual ICollection<Pet> Pets { get; set; }
+
+    // Navigation property - Bir kullanıcının birden fazla favorisi olabilir
+    public virtual ICollection<Favorite> Favorites { get; set; }
 }
+

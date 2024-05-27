@@ -14,9 +14,9 @@ public class PetsConnectedDbContext : DbContext
     public DbSet<PetPhoto> PetPhotos { get; set; }
     public DbSet<Shelter> Shelters { get; set; }
     public DbSet<ShelterPhoto> ShelterPhotos { get; set; }
+    public DbSet<Favorite> Favorites { get; set; }
     public DbSet<MatchRequest> MatchRequests { get; set; }
     
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -27,18 +27,33 @@ public class PetsConnectedDbContext : DbContext
             .WithOne(p => p.Owner)
             .HasForeignKey(p => p.UserId)
             .OnDelete(DeleteBehavior.Cascade); // Bir User silindiğinde, ona ait Pets de silinecek.
-        
+
+        // MatchRequest ve Pet arasındaki ilişki
         modelBuilder.Entity<MatchRequest>()
-            .HasOne<Pet>(mr => mr.SenderPet)
+            .HasOne(mr => mr.SenderPet)
             .WithMany()
             .HasForeignKey(mr => mr.SenderPetId)
             .OnDelete(DeleteBehavior.Restrict); // veya NoAction, eğer cascade delete sorun yaratıyorsa
 
         modelBuilder.Entity<MatchRequest>()
-            .HasOne<Pet>(mr => mr.ReceiverPet)
+            .HasOne(mr => mr.ReceiverPet)
             .WithMany()
             .HasForeignKey(mr => mr.ReceiverPetId)
             .OnDelete(DeleteBehavior.Restrict); 
+
+        // User ve Favorite arasındaki bir-çoka ilişkiyi kurar.
+        modelBuilder.Entity<User>()
+            .HasMany(u => u.Favorites)
+            .WithOne(f => f.User)
+            .HasForeignKey(f => f.UserId)
+            .OnDelete(DeleteBehavior.NoAction); // Döngüleri ve çoklu yolları engellemek için ON DELETE NO ACTION kullanıldı
+
+        // Pet ve Favorite arasındaki bir-çoka ilişkiyi kurar.
+        modelBuilder.Entity<Favorite>()
+            .HasOne(f => f.Pet)
+            .WithMany()
+            .HasForeignKey(f => f.PetId)
+            .OnDelete(DeleteBehavior.NoAction); // Döngüleri ve çoklu yolları engellemek için ON DELETE NO ACTION kullanıldı
 
         // Diğer model yapılandırmaları...
     }

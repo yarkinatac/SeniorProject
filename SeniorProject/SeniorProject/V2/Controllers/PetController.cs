@@ -118,7 +118,7 @@ namespace SeniorProject.V2.Controllers
                 Personality = combinedDto.Personality,
                 UserId = userId,
                 HealthInfo = combinedDto.HealthInfo,
-                AdverdType = combinedDto.AdvertType,
+                AdvertType = combinedDto.AdvertType,
                 Photos = new List<PetPhoto>
                 {
                     new PetPhoto { PhotoUrl = photoUrl } 

@@ -31,7 +31,7 @@ public class Pet
 
     public string Bio { get; set; }
     
-    public AdvertType AdverdType { get; set; }
+    public AdvertType AdvertType { get; set; }
 
 
     // Foreign Key

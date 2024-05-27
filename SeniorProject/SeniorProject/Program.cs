@@ -13,11 +13,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAll", policy =>
     {
         policy.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader();
+              .AllowAnyMethod()
+              .AllowAnyHeader();
     });
 });
-
 
 // Google ve JWT kimlik doğrulaması için yapılandırmalar
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -31,11 +30,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false
         };
     });
-    // .AddGoogle(options =>
-    // {
-    //     options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-    //     options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-    // });
 
 // Fotoğraf yükleme için gerekli yapılandırma
 builder.Services.AddControllers()
@@ -84,7 +78,6 @@ var app = builder.Build();
 
 // CORS middleware'ini kullan
 app.UseCors("AllowAll");
-
 
 if (app.Environment.IsDevelopment())
 {

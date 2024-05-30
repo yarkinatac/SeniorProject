@@ -1,0 +1,318 @@
+body {
+  font-family: "Fredoka", sans-serif;
+  background-color: #f4dfba;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* justify-content: center; yerine flex-start kullanıldı */
+  min-height: 100vh; /* height: 100%; yerine min-height: 100vh kullanıldı */
+}
+
+header {
+  width: 100%;
+  padding: 0.5rem 0;
+}
+
+ul,
+li,
+a {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  list-style: none;
+}
+
+@keyframes slideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+nav {
+  display: flex;
+  justify-content: right;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0;
+}
+
+nav div {
+  flex-grow: 1;
+}
+
+nav ul {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 3rem;
+  padding-right: 1rem;
+}
+
+nav ul li {
+  display: inline-block;
+  text-align: center;
+}
+
+nav ul li a {
+  color: #65451f;
+  font-size: 0.8rem;
+  font-family: "Fredoka", sans-serif;
+  font-weight: bold;
+}
+
+nav ul li a:hover {
+  color: #b3764a;
+}
+
+nav a img {
+  width: 25%;
+}
+
+#active {
+  text-decoration: #65451f underline;
+  text-decoration-thickness: 0.13rem;
+  text-underline-offset: 0.2rem;
+}
+
+.menu-icon {
+  display: none;
+  cursor: pointer;
+  font-size: 24px;
+  padding: 10px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+}
+
+#menu-toggle {
+  display: none;
+}
+
+#menu-toggle:checked + .menu-icon {
+  color: white;
+}
+
+#title {
+  text-align: center;
+  font-size: 3rem;
+}
+
+.paw-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.paw-divider-edit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 3rem 0;
+}
+
+.paw-divider img,
+.paw-divider-edit img {
+  height: auto;
+  width: auto;
+}
+
+.paw-divider img:first-child,
+.paw-divider img:last-child,
+.paw-divider-edit img:first-child,
+.paw-divider-edit img:last-child {
+  flex-grow: 2;
+  height: 2px;
+  max-width: 80%;
+}
+
+.paw-divider img:nth-child(2),
+.paw-divider-edit img:nth-child(2) {
+  width: 2.5rem;
+  margin: 0 1.25rem;
+}
+
+.left-right .left,
+.left-right .right {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 3rem 1.25rem;
+  flex-wrap: wrap;
+  border-radius: 1rem;
+  background-color: #ebaf78;
+  box-shadow: 0.2rem 0.2rem rgba(0, 0, 0, 0.4);
+}
+
+.left-right .left .text,
+.left-right .right .text {
+  flex: 1;
+  padding: 3rem;
+}
+
+.left-right .left .text p,
+.left-right .right .text p {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.left-right .left .text h2,
+.left-right .right .text h2 {
+  font-size: 2rem;
+}
+
+.left-right .left .visual,
+.left-right .right .visual {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.left-right .left .visual img,
+.left-right .right .visual img {
+  width: 30rem;
+  height: 25rem;
+  padding: 1rem;
+}
+
+footer {
+  width: 100%;
+  background-color: #65451f;
+  text-align: center;
+  color: #f4dfba;
+  display: flex;
+  justify-content: space-between;
+  position: relative; /* Sabit konumlandırmayı kaldırdık */
+  margin-top: auto; /* Footer'ın sayfanın altına itilmesini sağladık */
+}
+
+footer p {
+  color: #f4dfba;
+  margin: 0;
+  padding: 1rem;
+}
+
+footer a {
+  color: #f4dfba;
+  padding: 1rem;
+}
+
+@media (max-width: 768px) {
+  nav ul {
+    flex-direction: column;
+    gap: 1rem;
+    padding-right: 0;
+  }
+  nav a img {
+    width: 50%;
+  }
+  .left-right .left .visual img,
+  .left-right .right .visual img {
+    width: 15rem;
+    height: auto;
+  }
+  .left-right .left .text,
+  .left-right .right .text {
+    padding: 1.5rem;
+  }
+  .left-right .left .text p,
+  .left-right .right .text p {
+    font-size: 1rem;
+  }
+  .left-right .left .text h2,
+  .left-right .right .text h2 {
+    font-size: 1.5rem;
+  }
+
+  .menu {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background-color: #65451f;
+    position: absolute;
+    left: 0;
+    margin-top: -0.5rem;
+    padding: 1rem 0;
+    border-radius: 0 0 10% 10%;
+  }
+
+  .menu li {
+    text-align: center;
+    padding: 10px 0;
+  }
+
+  .menu li a {
+    color: white;
+  }
+
+  .menu-icon {
+    display: block;
+  }
+
+  #menu-toggle:checked + .menu-icon + nav .menu {
+    display: flex;
+    flex-direction: column;
+    animation: slideDown 0.5s ease forwards;
+  }
+
+  .paw-divider img:first-child,
+  .paw-divider img:last-child,
+  .paw-divider-edit img:first-child,
+  .paw-divider-edit img:last-child {
+    max-width: 40%;
+  }
+
+  .paw-divider img:nth-child(2),
+  .paw-divider-edit img:nth-child(2) {
+    width: 1rem;
+    margin: 0 0.5rem;
+  }
+
+  footer p,
+  footer a {
+    font-size: 0.6rem;
+  }
+
+  footer {
+    position: relative; /* Sabit konumlandırmayı kaldırdık */
+    margin-top: auto; /* Footer'ın sayfanın altına itilmesini sağladık */
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 10px;
+  }
+
+  .navbar a {
+    padding: 10px;
+  }
+
+  .footer {
+    padding: 1rem;
+  }
+}
+
+.menu.fade-in {
+  animation: fadeIn 0.5s ease-in forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,61 @@
+.founders {
+    text-align: center;
+    width: 70%;
+    margin: -2rem auto;
+    padding: 20px 0;
+  }
+  
+  .founders-profiles {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+  
+  .founders h2 {
+    margin-top: 2rem;
+    font-size: 3rem;
+  }
+  
+  .founder img {
+    width: 10rem;
+    height: 10rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 0.2rem solid #65451F;
+    margin-top: 2.5rem;
+    
+  }
+  
+  .founder h3 {
+    text-align: center;
+    font-size: 1.5rem;
+  }
+  
+  .founder p {
+    text-align: center;
+    font-size: 0.75rem;
+    margin-top: -1rem;
+  }
+  
+  @media (max-width: 768px) {
+    .founders {
+        width: 90%;
+        padding: 10px 0;
+    }
+    .founders h2 {
+        font-size: 2rem;
+    }
+    .founder img {
+        width: 8rem;
+        height: 8rem;
+    }
+    .founder h3 {
+        font-size: 1.5rem;
+        margin-top: 0.3rem;
+    }
+    .founder p {
+        font-size: 1rem;
+    }
+  }

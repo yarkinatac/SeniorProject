@@ -1,24 +1,27 @@
-// src/components/navigation/LocServiceNavigator.js
 import React from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet, Dimensions } from "react-native";
 
 const LocServiceNav = ({ onServiceSelect, activeService }) => {
-
   const services = [
     {
-      name: "Veterinary",
+      name: "Veterinaries",
       icon: require("../../assets/images/icons/vet-icon.png"),
-      screen: "VeterinaryServices",
+      screen: "Veterinaries",
     },
     {
-      name: "Grooming",
+      name: "Groomers",
       icon: require("../../assets/images/icons/grooming-icon.png"),
-      screen: "GroomingServices",
+      screen: "Groomers",
     },
     {
-      name: "Boarding",
-      icon: require("../../assets/images/icons/boarding-icon.png"),
-      screen: "BoardingServices",
+      name: "Pet Shops",
+      icon: require("../../assets/images/icons/petshop-icon.png"),
+      screen: "PetShops",
+    },
+    {
+      name: "Boardings",
+      icon: require("../../assets/images/icons/boarding-icon.png"),  
+      screen: "Boardings",
     },
   ];
 
@@ -38,7 +41,8 @@ const LocServiceNav = ({ onServiceSelect, activeService }) => {
     </View>
   );
 };
-const { width, height } = Dimensions.get("window");
+
+const { width } = Dimensions.get("window");
 const baseUnit = width / 100;
 
 const styles = StyleSheet.create({
@@ -52,9 +56,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   serviceButton: {
-    width: 60, 
-    height: 60, 
-    borderRadius: 15, 
+    width: 60,
+    height: 60,
+    borderRadius: 15,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#D0D7D5', // Default background color for inactive services
@@ -67,10 +71,11 @@ const styles = StyleSheet.create({
     height: baseUnit * 8, // Adjust the size of your icon image
   },
   serviceText: {
-    fontFamily:"Fredoka_400Regular",
+    fontFamily: "Fredoka_400Regular",
     marginTop: 4, // Space between the icon and the text
-    fontSize: baseUnit * 3.5 ,
+    fontSize: baseUnit * 3.5,
     color: '#000', // Text color
   },
 });
+
 export default LocServiceNav;

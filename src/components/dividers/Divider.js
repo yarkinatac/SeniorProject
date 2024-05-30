@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet,Text, Image } from 'react-native';
+import { View, StyleSheet} from 'react-native';
 
 const Divider = () => (
   <View style={styles.dividerContainer}>
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   line: {
     flex: 1,
     height: 1,
-    backgroundColor: '#000', // Replace with your color
+    backgroundColor: '#000', 
     maxWidth: '90%',
   },
 

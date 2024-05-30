@@ -1,21 +1,21 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 
 const FIRST_LAUNCH_KEY = 'hasLaunched';
 
 export const setAppLaunched = async () => {
   try {
-    await AsyncStorage.setItem(FIRST_LAUNCH_KEY, 'true');
+    await SecureStore.setItemAsync(FIRST_LAUNCH_KEY, 'true');
   } catch (error) {
-    // Handle errors here
+    console.error("Failed to set app as launched:", error);
   }
 };
 
 export const checkIfFirstLaunch = async () => {
   try {
-    const hasLaunched = await AsyncStorage.getItem(FIRST_LAUNCH_KEY);
+    const hasLaunched = await SecureStore.getItemAsync(FIRST_LAUNCH_KEY);
     return hasLaunched === null;
   } catch (error) {
-    // Handle errors here
-    return false;
+    console.error("Failed to check if app has launched:", error);
+    return true; // Default to true if we cannot access the secure store
   }
 };

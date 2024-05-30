@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import { View, TextInput, StyleSheet, Dimensions } from 'react-native';
 
 const PetDetailsInput = ({ value, onChangeText, placeholder, multiline = false }) => {
   return (
@@ -15,18 +15,21 @@ const PetDetailsInput = ({ value, onChangeText, placeholder, multiline = false }
     </View>
   );
 };
+const { width, height } = Dimensions.get("window");
+const baseUnit = width / 100;
 
 const styles = StyleSheet.create({
   inputContainer: {
-    marginVertical: 10,
+    marginVertical: baseUnit * 2,
     backgroundColor: "#EBAF78",
     borderWidth: 1,
     borderColor: '#D9A877',
     borderRadius: 16,
   },
   input: {
-    padding: 15,
-    fontSize: 16,
+    fontFamily:"Fredoka_400Regular",
+    padding: baseUnit * 4,
+    fontSize: baseUnit * 4.5,
     color: '#333',
   },
   multilineInput: {

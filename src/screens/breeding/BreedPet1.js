@@ -1,59 +1,159 @@
-import React from "react";
-import { View, StyleSheet, Image, Dimensions } from "react-native";
-import LogoImage from "../../assets/images/home/main-logo.png";
-import PetOption from "../../components/buttons/PetOption";
-import ExistingPetIcon from "../../assets/images/icons/filter-icon.png";
-import NewPetIcon from "../../assets/images/icons/filter-icon.png";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  ActivityIndicator,
+  Alert,
+  Dimensions
+} from "react-native";
+import CustomHeader from "../../components/header/HeaderSettings";
+import PetCard from "../../components/cards/PetCard";
+import usePetsData from "../../hooks/usePetsData";
+import FilterButton from "../../components/buttons/FilterButton";
+import { useAuth } from "../../hooks/useAuth";
 
+const BreedPet = ({ navigation, route }) => {
+  const { userToken } = useAuth();
+  const { petsData, isLoading, error } = usePetsData(userToken);
+  const [filteredPets, setFilteredPets] = useState([]);
 
-const BreedPet1 = ({ navigation }) => {
+  useEffect(() => {
+    setFilteredPets(petsData);
+  }, [petsData]);
+
+  useEffect(() => {
+    if (route.params?.filters) {
+      applyFilters(route.params.filters);
+    }
+  }, [route.params?.filters, petsData]);
+
+  const applyFilters = (filters) => {
+    const filtered = petsData.filter((pet) => {
+      let matches = true;
+      if (
+        filters.petType &&
+        pet.type.toLowerCase() !== filters.petType.toLowerCase()
+      ) {
+        matches = false;
+      }
+      if (
+        filters.selectedBreed &&
+        pet.breed.toLowerCase() !== filters.selectedBreed.toLowerCase()
+      ) {
+        matches = false;
+      }
+      if (
+        filters.sex.length > 0 &&
+        !filters.sex.includes(pet.gender.toLowerCase())
+      ) {
+        matches = false;
+      }
+      if (
+        filters.size.length > 0 &&
+        !filters.size.includes(pet.size.toLowerCase())
+      ) {
+        matches = false;
+      }
+      if (
+        filters.shedding.length > 0 &&
+        !filters.shedding.includes(pet.shedding.toLowerCase())
+      ) {
+        matches = false;
+      }
+      if (
+        filters.personality.length > 0 &&
+        !filters.personality.some((trait) => pet.personality.includes(trait))
+      ) {
+        matches = false;
+      }
+      return matches;
+    });
+    setFilteredPets(filtered);
+  };
+
+  if (isLoading) {
+    return (
+      <View style={styles.loader}>
+        <ActivityIndicator size="large" color="#A6573E" />
+      </View>
+    );
+  }
+
+  if (error) {
+    Alert.alert("Error", "Failed to fetch pets data.");
+    return null;
+  }
+
   return (
     <View style={styles.container}>
-      <Image source={LogoImage} style={styles.logo} />
-      <View style={styles.buttonContainer}>
-        <PetOption
-          mainText="Existing Pet"
-          helpfulText="Choose a pet you've already added"
-          icon={ExistingPetIcon}
-          onPress={() => {
-            navigation.navigate("AdoptSearch2")
-          }}
-        />
-        <PetOption
-          mainText="New Pet"
-          helpfulText="Add a new furry friend to your profile"
-          icon={NewPetIcon}
-          onPress={() => {
-            /* TODO: Navigate to new pet addition */
-          }}
-        />
-        {/* Add additional UI elements or options */}
+      <CustomHeader />
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>Available Furry Friends</Text>
+        <Text style={styles.subtitle}>Choose Your Future Companion</Text>
       </View>
+      <View style={styles.filterButtonsContainer}>
+        <Text style={styles.browsePets}>Browse Pets</Text>
+        <FilterButton onPress={() => navigation.navigate("FilterScreen")} />
+      </View>
+      <FlatList
+        data={filteredPets.length > 0 ? filteredPets : petsData}
+        renderItem={({ item }) => (
+          <PetCard
+            petName={item.name}
+            petBreed={item.breed}
+            petImage={{ uri: item.photos[0]?.photoUrl }}
+            gender={item.gender}
+            onSelect={() =>
+              navigation.navigate("PetInformation", { pet: item })
+            }
+            buttonText="View Details"
+          />
+        )}
+        keyExtractor={(item) => item.petId.toString()}
+      />
     </View>
   );
 };
-const { width, height } = Dimensions.get('window');
-const baseUnit = width / 100; 
+const { width } = Dimensions.get("window");
+const baseUnit = width / 100;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#F4DFBA",
+  },
+  titleContainer: {
+    marginLeft: "3%",
+    marginTop: "5%",
+  },
+  title: {
+    fontFamily: "Fredoka_600SemiBold",
+    fontSize: baseUnit * 8,
+    marginBottom: baseUnit,
+  },
+  subtitle: {
+    fontFamily: "Fredoka_400Regular",
+    fontSize: baseUnit * 5,
+  },
+  filterButtonsContainer: {
+    flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal:baseUnit * 5,
+    marginTop: baseUnit * 7,
+    marginBottom: baseUnit * 2,
   },
-  logo: {
-    marginTop: baseUnit * 10,
-    height: height * 0.2,
-    width: width * 0.8,
-    resizeMode: "contain",
+  browsePets: {
+    fontFamily: "Fredoka_500Medium",
+    fontSize: baseUnit * 6
   },
-  buttonContainer: {
+  loader: {
     flex: 1,
-    alignItems: 'center',
-    width: '100%',
-    paddingHorizontal: baseUnit * 5,
-    gap: baseUnit * 7  
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
-export default BreedPet1;
+export default BreedPet;

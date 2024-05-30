@@ -1,154 +1,158 @@
-// BecomePetSitterScreen.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
   StyleSheet,
   FlatList,
-  TouchableOpacity,
-  Image,
+  ActivityIndicator,
+  Alert,
+  Dimensions
 } from "react-native";
-import PetAdvert from "../../components/buttons/PetAdvert";
-import FilterImage from "../../assets/images/icons/filter-icon.png"
-import imageExample from "../../assets/images/home/breeding.png"
+import CustomHeader from "../../components/header/HeaderSettings";
+import PetCard from "../../components/cards/PetCard";
+import usePetsData from "../../hooks/usePetsData";
+import FilterButton from "../../components/buttons/FilterButton";
+import { useAuth } from "../../hooks/useAuth";
 
-// Dummy data for pets, this should come from your actual data source
-const petsData = [
-  { id: "1", name: "Buddy", type: "Dog", imageUrl: imageExample },
-  { id: "2", name: "Max", type: "Dog", imageUrl: imageExample },
-  { id: "3", name: "Whiskers", type: "Cat", imageUrl: imageExample },
-  // ... other pets
-];
+const AdoptPet = ({ navigation, route }) => {
+  const { userToken } = useAuth();
+  const { petsData, isLoading, error } = usePetsData(userToken);
+  const [filteredPets, setFilteredPets] = useState([]);
 
-const AdoptPet = ({ navigation }) => {
-  const [selectedType, setSelectedType] = useState("Dog");
-  const [petsToShow, setPetsToShow] = useState(
-    petsData.filter((pet) => pet.type === "Dog")
-  );
+  useEffect(() => {
+    setFilteredPets(petsData);
+  }, [petsData]);
 
-  const filterPets = (type) => {
-    setSelectedType(type);
-    setPetsToShow(petsData.filter((pet) => pet.type === type));
+  useEffect(() => {
+    if (route.params?.filters) {
+      applyFilters(route.params.filters);
+    }
+  }, [route.params?.filters, petsData]);
+
+  const applyFilters = (filters) => {
+    const filtered = petsData.filter((pet) => {
+      let matches = true;
+      if (
+        filters.petType &&
+        pet.type.toLowerCase() !== filters.petType.toLowerCase()
+      ) {
+        matches = false;
+      }
+      if (
+        filters.selectedBreed &&
+        pet.breed.toLowerCase() !== filters.selectedBreed.toLowerCase()
+      ) {
+        matches = false;
+      }
+      if (
+        filters.sex.length > 0 &&
+        !filters.sex.includes(pet.gender.toLowerCase())
+      ) {
+        matches = false;
+      }
+      if (
+        filters.size.length > 0 &&
+        !filters.size.includes(pet.size.toLowerCase())
+      ) {
+        matches = false;
+      }
+      if (
+        filters.shedding.length > 0 &&
+        !filters.shedding.includes(pet.shedding.toLowerCase())
+      ) {
+        matches = false;
+      }
+      if (
+        filters.personality.length > 0 &&
+        !filters.personality.some((trait) => pet.personality.includes(trait))
+      ) {
+        matches = false;
+      }
+      return matches;
+    });
+    setFilteredPets(filtered);
   };
 
-  // Render each pet as a button in a FlatList
-  const renderPetButton = ({ item }) => (
-    <TouchableOpacity
-      style={styles.petButton}
-      onPress={() => {
-        /* Navigate to pet details */
-      }}
-    >
-      <Image source={{ uri: item.imageUrl }} style={styles.petImage} />
-      <Text style={styles.petName}>{item.name}</Text>
-    </TouchableOpacity>
-  );
+  if (isLoading) {
+    return (
+      <View style={styles.loader}>
+        <ActivityIndicator size="large" color="#A6573E" />
+      </View>
+    );
+  }
+
+  if (error) {
+    Alert.alert("Error", "Failed to fetch pets data.");
+    return null;
+  }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Available Furry Friends</Text>
-      <Text style={styles.subtitle}>Filter</Text>
-      <View style={styles.filterContainer}>
-        <TouchableOpacity
-          onPress={() => {}}
-          style={[
-            styles.filterButton,
-          ]}
-        >
-          <Image source={FilterImage} style={styles.filterButton}></Image>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => filterPets("Dog")}
-          style={[
-            styles.dogButton,
-            selectedType === "Dog" && styles.selectedButton,
-          ]}
-        >
-          <Text style={styles.filterText}>Dogs</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => filterPets("Cat")}
-          style={[
-            styles.catButton,
-            selectedType === "Cat" && styles.selectedButton,
-          ]}
-        >
-          <Text style={styles.filterText}>Cats</Text>
-        </TouchableOpacity>
+      <CustomHeader />
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>Available Furry Friends</Text>
+        <Text style={styles.subtitle}>Choose Your Future Companion</Text>
+      </View>
+      <View style={styles.filterButtonsContainer}>
+        <Text style={styles.browsePets}>Browse Pets</Text>
+        <FilterButton onPress={() => navigation.navigate("FilterScreen")} />
       </View>
       <FlatList
-        data={petsToShow}
+        data={filteredPets.length > 0 ? filteredPets : petsData}
         renderItem={({ item }) => (
-          <PetAdvert
-            name={item.name}
-            imageUrl={item.imageUrl}
-            onPress={() => {
-              /* Handle the pet selection */
-            }}
+          <PetCard
+            petName={item.name}
+            petBreed={item.breed}
+            petImage={{ uri: item.photos[0]?.photoUrl }}
+            gender={item.gender}
+            onSelect={() =>
+              navigation.navigate("PetInformation", { pet: item })
+            }
+            buttonText="View Details"
           />
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.petId.toString()}
       />
     </View>
   );
 };
+const { width } = Dimensions.get("window");
+const baseUnit = width / 100;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: "5%",
     backgroundColor: "#F4DFBA",
-    justifyContent: "center",
+  },
+  titleContainer: {
+    marginLeft: "3%",
+    marginTop: "5%",
   },
   title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "flex-start",
-    marginVertical: "5%",
-    marginTop: "20%",
+    fontFamily: "Fredoka_600SemiBold",
+    fontSize: baseUnit * 8,
+    marginBottom: baseUnit,
   },
   subtitle: {
-    fontSize: 20,
-    fontWeight: "bold",
+    fontFamily: "Fredoka_400Regular",
+    fontSize: baseUnit * 5,
   },
-  filterContainer: {
+  filterButtonsContainer: {
     flexDirection: "row",
-    justifyContent: "flex-start",
-    marginVertical: "3%",
-    borderBottomWidth: 1,
-    paddingBottom: 24,
-    borderBottomColor: '#000000'
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal:baseUnit * 5,
+    marginTop: baseUnit * 7,
+    marginBottom: baseUnit * 2,
   },
-  filterButton: {
-    backgroundColor: "#A6573E", // Adjust to match your theme
-    borderRadius: 20,
-    padding: '2%',
-    marginHorizontal: '1%',
-    alignSelf: 'center'
-    
+  browsePets: {
+    fontFamily: "Fredoka_500Medium",
+    fontSize: baseUnit * 6
   },
-  dogButton: {
-    flexDirection: "row",
-    backgroundColor: "#EBAF78", // Adjust to match your theme
-    borderRadius: 20,
-    padding: '2%',
-    marginHorizontal: '2%',
-  },
-  catButton: {
-    flexDirection: "row",
-    backgroundColor: "#EBAF78", // Adjust to match your theme
-    borderRadius: 20,
-    padding: '2%',
-    marginHorizontal: '2%',
-  },
-  filterText: {
-    color: 'white',
-    fontSize: 18,
-    alignSelf: 'center',
-    paddingHorizontal: '5%'
-  },
-  selectedButton: {
-    backgroundColor: "#A6573E", 
+  loader: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

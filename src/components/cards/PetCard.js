@@ -7,8 +7,7 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import FemaleIcon from "../../assets/images/icons/female-icon.png";
-import MaleIcon from "../../assets/images/icons/male-icon.png";
+import { Foundation } from '@expo/vector-icons';
 
 const PetCard = ({ petName, petBreed, petImage, gender, onSelect, buttonText }) => {
   return (
@@ -17,8 +16,10 @@ const PetCard = ({ petName, petBreed, petImage, gender, onSelect, buttonText }) 
       <View style={styles.infoContainer}>
         <View style={styles.headerContainer}>
           <Text style={styles.petName}>{petName}</Text>
-          <Image
-            source={gender === "male" ? MaleIcon : FemaleIcon}
+          <Foundation
+            name={gender === "Male" ? "male-symbol" : "female-symbol"}
+            size={baseUnit * 7}
+            color="#A6573E"
             style={styles.genderIcon}
           />
         </View>
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
   petImage: {
     width: baseUnit * 35,
     height: baseUnit * 35,
-    borderRadius: baseUnit * 1.5,
+    borderRadius: 5,
     borderWidth: 1.5,
     borderColor: "#A6573E",
   },
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
     color: "#A6573E",
   },
   petBreed: {
-    fontSize: baseUnit * 4, // Dynamic font size
+    fontSize: baseUnit * 4,
     fontFamily:"Fredoka_500Medium",
     color: "#A6573E",
     marginBottom: baseUnit * 10,
@@ -91,7 +92,7 @@ const styles = StyleSheet.create({
   },
   selectButton: {
     backgroundColor: "#A6573E",
-    borderRadius: baseUnit * 0.6,
+    borderRadius: 6,
     paddingVertical: baseUnit * 3,
     paddingHorizontal: baseUnit * 15,
     alignSelf: "flex-start",

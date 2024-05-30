@@ -1,8 +1,8 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
-import PaginationDots from "../../components/PaginationDots"; 
+import { View, Text, Image, Dimensions, StyleSheet } from "react-native";
+import PaginationDots from "../../components/PaginationDots";
 import welcomeGif from "../../assets/gifs/welcomeScreens/welcomeScreen1.gif";
-import Button from "../../components/buttons/WelcomeScreenButton";
+import Button from "../../components/buttons/SubmitButton";
 
 const WelcomeScreen1 = ({ navigation }) => {
   return (
@@ -12,10 +12,11 @@ const WelcomeScreen1 = ({ navigation }) => {
       </View>
       <View style={styles.textContainer}>
         <PaginationDots currentIndex={0} totalScreens={3} />
-        <Text style={styles.title}>Hey! Welcome</Text>
+        <Text style={styles.title}>Welcome to Your Pet Community !</Text>
         <Text style={styles.subtitle}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc urna
-          libero, dapibus quis augue quis, aliquet dapibus massa.
+          Join a vibrant community where
+          <Text style={styles.highlight}> pet lovers unite. </Text>
+          Discover a world of opportunities for you and your furry friends.
         </Text>
         <Button
           title="Next"
@@ -26,15 +27,18 @@ const WelcomeScreen1 = ({ navigation }) => {
   );
 };
 
+const { width, height } = Dimensions.get("window");
+const baseUnit = width / 100;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
   gifContainer: {
-    flex: 1.5,
+    flex: 1.25,
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
+    padding: baseUnit * 5,
     backgroundColor: "#F4DFBA",
   },
   textContainer: {
@@ -43,8 +47,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    paddingVertical: 20,
-    paddingHorizontal: 50,
+    paddingVertical: baseUnit * 5,
+    paddingHorizontal: baseUnit * 6,
     alignItems: "center",
   },
   gif: {
@@ -52,19 +56,24 @@ const styles = StyleSheet.create({
     height: 350,
   },
   title: {
-    fontFamily:"Fredoka_600SemiBold",
+    textAlign: "center",
+    fontFamily: "Fredoka_600SemiBold",
     fontSize: 32,
     fontWeight: "bold",
     marginTop: 20,
-    color: "black",
+    color: "#4D3213",
+    alignSelf: "auto",
   },
   subtitle: {
-    fontFamily:"Fredoka_500Medium",
-    fontSize: 20,
+    fontFamily: "Fredoka_500Medium",
+    fontSize: 22,
     textAlign: "center",
     marginTop: 20,
     marginBottom: 50,
-    color: "grey",
+    color: "#535353",
+  },
+  highlight: {
+    color:"#E5A55A"
   },
 });
 

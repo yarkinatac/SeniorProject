@@ -1,52 +1,34 @@
-import React, { useState } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { CheckBox } from '@rneui/themed';
 
 const CheckboxComponent = ({ title, onCheck, isChecked, style, textStyle }) => {
-  const [checked, setChecked] = useState(isChecked);
-
-  const handlePress = () => {
-    setChecked(!checked);
-    onCheck(!checked);
-  };
-
   return (
-    <TouchableOpacity style={[styles.container, style]} onPress={handlePress}>
-      <View style={[styles.checkbox, checked && styles.checked]}>
-        {checked && <View style={styles.innerCheckmark} />}
-      </View>
-      <Text style={[styles.text, textStyle]}>{title}</Text>
-    </TouchableOpacity>
+    <CheckBox
+      title={title}
+      checked={isChecked}
+      onPress={onCheck}
+      containerStyle={[styles.container, style]}
+      textStyle={[styles.text, textStyle]}
+      checkedColor='#A52A2A' 
+      uncheckedColor='#65451F'
+    />
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  checkbox: {
-    height: 20,
-    width: 20,
-    borderRadius: 3,
-    borderWidth: 2,
-    borderColor: '#A52A2A',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 10,
-  },
-  checked: {
-    borderColor: '#A52A2A',
-    backgroundColor: '#A52A2A',
-  },
-  innerCheckmark: {
-    width: 12,
-    height: 12,
-    backgroundColor: 'white',
+    backgroundColor: 'transparent', 
+    borderWidth: 0, 
+    paddingVertical: 0,
+    marginLeft: 0,
+    marginHorizontal: 0, 
   },
   text: {
-    fontFamily:"Fredoka_400Regular",
+    fontFamily: "Fredoka_400Regular", 
     fontSize: 16,
     color: 'black',
+    fontWeight: 'normal', 
   },
 });
 

@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import OnboardingNavigator from "./navigation/OnboardingNavigator";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import MainAppNavigator from "./navigation/MainAppNavigator";
+import TestNavigator from "./navigation/test";
+import { AuthProvider } from "./context/AuthContext";
+import { FlowProvider } from "./context/FlowContext";
 import * as SplashScreen from "expo-splash-screen";
-
+import { ThemeProvider, createTheme } from "@rneui/themed";
+import { UserProvider } from "./context/UserContext"; // 
 import {
   checkIfFirstLaunch,
   setAppLaunched,
@@ -14,11 +18,10 @@ import {
   Fredoka_500Medium,
   Fredoka_600SemiBold,
 } from "@expo-google-fonts/fredoka";
+import setupApiKeys from "./services/api/apiKeySetup";
 
 export default function App() {
   const [isFirstLaunch, setIsFirstLaunch] = useState(null);
-  //const isFirstLaunch = true; // Temporarily force first launch
-  const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false);
 
   let [fontsLoaded] = useFonts({
     Fredoka_400Regular,
@@ -29,36 +32,56 @@ export default function App() {
   useEffect(() => {
     async function prepare() {
       try {
-        // Prevent the splash screen from hiding
         await SplashScreen.preventAutoHideAsync();
-
-        // Check if it's the first launch
         const isFirst = await checkIfFirstLaunch();
+        await setupApiKeys();
         setIsFirstLaunch(isFirst);
-        if (isFirst) {
-          await setAppLaunched();
-        }
-
-        // Hide the splash screen once the fonts are loaded and first launch check is done
+      } catch (e) {
+        console.warn("Error during app preparation:", e);
+      } finally {
         if (fontsLoaded) {
           await SplashScreen.hideAsync();
         }
-      } catch (e) {
-        console.warn(e);
       }
     }
 
     prepare();
-  }, [fontsLoaded, isFirstLaunch]);
+  }, [fontsLoaded]);
 
   if (!fontsLoaded || isFirstLaunch === null) {
-    return null; // Return null or a loading indicator while fonts are loading and checking first launch
+    return null; // Consider returning a basic loading indicator here
   }
 
+  const theme = createTheme({
+    colors: {
+      background: "#F4DFBA",
+      primary: "#65451F",
+      secondary: "#EBAF78",
+    },
+  });
+
   return (
-     <NavigationContainer>
-    {isFirstLaunch ? (<OnboardingNavigator /> 
-    ): <MainAppNavigator /> } 
-   </NavigationContainer>
+    <SafeAreaProvider>
+      <ThemeProvider theme={theme}>
+        <AuthProvider>
+          <UserProvider> 
+            <NavigationContainer>
+              <MainAppNavigator />
+            </NavigationContainer>
+          </UserProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </SafeAreaProvider>
+    /* <SafeAreaProvider>
+      <ThemeProvider theme={theme}>
+        <AuthProvider>
+          <FlowProvider>
+            <NavigationContainer>
+              <TestNavigator />
+            </NavigationContainer>
+          </FlowProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </SafeAreaProvider>   */
   );
 }
